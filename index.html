@@ -13,10 +13,12 @@
         .slots { font-size: 40px; text-align: center; margin: 20px 0; }
         .game-result { text-align: center; margin: 10px 0; font-size: 18px; }
         input { width: 100%; padding: 12px; margin: 10px 0; border-radius: 8px; border: none; }
+        .win { color: #4CAF50; }
+        .lose { color: #f44336; }
     </style>
 </head>
 <body>
-    <div class="balance">💰 Баланс: <span id="balance">100</span> монет</div>
+    <div class="balance">💰 Баланс: <span id="balance">Загрузка...</span> монет</div>
     
     <div class="section">
         <h3>🎰 ИГРОВЫЕ АВТОМАТЫ</h3>
@@ -56,6 +58,7 @@
         
         // 🎰 СЛОТЫ
         function spinSlots() {
+            document.getElementById('slots-result').textContent = "🎰 Крутим...";
             sendToBot({action: 'game', type: 'slots', bet: 10});
         }
         
@@ -63,9 +66,11 @@
         function guessNumber() {
             const guess = document.getElementById('numberGuess').value;
             if(guess && guess >= 1000 && guess <= 9999) {
+                document.getElementById('number-result').textContent = "🔢 Проверяем...";
                 sendToBot({action: 'game', type: 'number', guess: parseInt(guess), bet: 20});
             } else {
                 document.getElementById('number-result').textContent = "❌ Введите число от 1000 до 9999";
+                document.getElementById('number-result').className = "game-result lose";
             }
         }
         
@@ -73,9 +78,11 @@
         function rollDice() {
             const guess = document.getElementById('diceGuess').value;
             if(guess && guess >= 2 && guess <= 12) {
+                document.getElementById('dice-result').textContent = "🎲 Бросаем...";
                 sendToBot({action: 'game', type: 'dice', guess: parseInt(guess), bet: 15});
             } else {
                 document.getElementById('dice-result').textContent = "❌ Введите сумму от 2 до 12";
+                document.getElementById('dice-result').className = "game-result lose";
             }
         }
         
@@ -96,6 +103,11 @@
         function sendToBot(data) {
             tg.sendData(JSON.stringify(data));
         }
+        
+        // Обработка входящих сообщений от бота
+        tg.onEvent('viewportChanged', function() {
+            // Обновляем интерфейс при изменении
+        });
     </script>
 </body>
 </html>
