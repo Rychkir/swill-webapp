@@ -1,35 +1,99 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>CryptoWin Slots</title>
+    <title>CryptoWin Games</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <style>
-        body { margin: 0; padding: 20px; background: #1a1a2e; color: white; font-family: Arial; }
-        .slot-machine { text-align: center; font-size: 50px; margin: 30px 0; }
-        .balance { font-size: 28px; margin: 20px 0; text-align: center; }
-        button { background: #ffd700; border: none; padding: 20px 40px;
-                font-size: 20px; border-radius: 15px; cursor: pointer;
-                margin: 10px; width: 200px; }
-        .controls { text-align: center; }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { background: #1a1a2e; color: white; font-family: Arial; padding: 20px; }
+        .section { background: #2d2d44; padding: 20px; margin: 10px 0; border-radius: 15px; }
+        button { background: #ffd700; border: none; padding: 15px; margin: 5px; 
+                border-radius: 10px; cursor: pointer; width: 100%; font-size: 16px; }
+        .balance { font-size: 24px; text-align: center; margin: 20px 0; }
+        .slots { font-size: 40px; text-align: center; margin: 20px 0; }
+        .game-result { text-align: center; margin: 10px 0; font-size: 18px; }
+        input { width: 100%; padding: 12px; margin: 10px 0; border-radius: 8px; border: none; }
     </style>
 </head>
 <body>
     <div class="balance">💰 Баланс: <span id="balance">100</span> монет</div>
-    <div class="slot-machine">
-        <span id="slot1">🍒</span> | <span id="slot2">🍒</span> | <span id="slot3">🍒</span>
+    
+    <div class="section">
+        <h3>🎰 ИГРОВЫЕ АВТОМАТЫ</h3>
+        <div class="slots">
+            <span id="slot1">🍒</span>
+            <span id="slot2">🍒</span>
+            <span id="slot3">🍒</span>
+        </div>
+        <button onclick="spinSlots()">🎰 Крутить (10 монет)</button>
+        <div class="game-result" id="slots-result"></div>
     </div>
-    <div class="controls">
-        <button onclick="spin()">🎰 Крутить (10 монет)</button>
+
+    <div class="section">
+        <h3>🔢 УГАДАЙ ЧИСЛО</h3>
+        <input type="number" id="numberGuess" placeholder="Число от 1000 до 9999" min="1000" max="9999">
+        <button onclick="guessNumber()">🎯 Угадать (20 монет)</button>
+        <div class="game-result" id="number-result"></div>
+    </div>
+
+    <div class="section">
+        <h3>🎲 КОСТИ</h3>
+        <input type="number" id="diceGuess" placeholder="Сумма от 2 до 12" min="2" max="12">
+        <button onclick="rollDice()">🎲 Бросить кости (15 монет)</button>
+        <div class="game-result" id="dice-result"></div>
+    </div>
+
+    <div class="section">
+        <h3>💰 КОШЕЛЕК</h3>
+        <button onclick="showWallet()">💳 Мой кошелек</button>
+        <button onclick="withdrawFunds()">💸 Вывод средств</button>
+        <button onclick="convertToStars()">⭐ Конвертировать в звезды</button>
     </div>
 
     <script>
         let tg = window.Telegram.WebApp;
         tg.expand();
-
-        function spin() {
-            const data = {
-                action: 'spin_slots'
-            };
+        
+        // 🎰 СЛОТЫ
+        function spinSlots() {
+            sendToBot({action: 'game', type: 'slots', bet: 10});
+        }
+        
+        // 🔢 УГАДАЙ ЧИСЛО  
+        function guessNumber() {
+            const guess = document.getElementById('numberGuess').value;
+            if(guess && guess >= 1000 && guess <= 9999) {
+                sendToBot({action: 'game', type: 'number', guess: parseInt(guess), bet: 20});
+            } else {
+                document.getElementById('number-result').textContent = "❌ Введите число от 1000 до 9999";
+            }
+        }
+        
+        // 🎲 КОСТИ
+        function rollDice() {
+            const guess = document.getElementById('diceGuess').value;
+            if(guess && guess >= 2 && guess <= 12) {
+                sendToBot({action: 'game', type: 'dice', guess: parseInt(guess), bet: 15});
+            } else {
+                document.getElementById('dice-result').textContent = "❌ Введите сумму от 2 до 12";
+            }
+        }
+        
+        // 💰 КОШЕЛЕК
+        function showWallet() {
+            sendToBot({action: 'wallet_info'});
+        }
+        
+        function withdrawFunds() {
+            sendToBot({action: 'withdraw'});
+        }
+        
+        function convertToStars() {
+            sendToBot({action: 'convert_stars'});
+        }
+        
+        // 📤 ОТПРАВКА ДАННЫХ БОТУ
+        function sendToBot(data) {
             tg.sendData(JSON.stringify(data));
         }
     </script>
