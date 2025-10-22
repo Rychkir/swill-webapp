@@ -1,72 +1,224 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>CryptoWin Games</title>
+    <title>CryptoWin Casino</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { background: #1a1a2e; color: white; font-family: Arial; padding: 20px; }
-        .section { background: #2d2d44; padding: 20px; margin: 10px 0; border-radius: 15px; }
-        button { background: #ffd700; border: none; padding: 15px; margin: 5px; 
-                border-radius: 10px; cursor: pointer; width: 100%; font-size: 16px; }
-        button:disabled { background: #666; cursor: not-allowed; }
-        .balance { font-size: 24px; text-align: center; margin: 20px 0; }
-        .slots { font-size: 40px; text-align: center; margin: 20px 0; }
-        .game-result { text-align: center; margin: 10px 0; font-size: 18px; }
-        input { width: 100%; padding: 12px; margin: 10px 0; border-radius: 8px; border: none; }
-        .win { color: #4CAF50; }
+        body { 
+            background: linear-gradient(135deg, #0c0c2e, #1a1a4a); 
+            color: white; 
+            font-family: 'Arial', sans-serif; 
+            padding: 15px;
+            min-height: 100vh;
+        }
+        
+        .header { 
+            text-align: center; 
+            margin-bottom: 20px; 
+            padding: 15px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 15px;
+            backdrop-filter: blur(10px);
+        }
+        
+        .balance-container {
+            display: flex;
+            justify-content: space-between;
+            margin: 15px 0;
+            gap: 10px;
+        }
+        
+        .balance-item {
+            flex: 1;
+            background: rgba(255,215,0,0.2);
+            padding: 15px;
+            border-radius: 12px;
+            text-align: center;
+            border: 2px solid gold;
+        }
+        
+        .balance-number {
+            font-size: 24px;
+            font-weight: bold;
+            color: gold;
+            margin-top: 5px;
+        }
+        
+        .section { 
+            background: rgba(255,255,255,0.1); 
+            padding: 20px; 
+            margin: 10px 0; 
+            border-radius: 15px; 
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+        
+        button { 
+            background: linear-gradient(45deg, #FFD700, #FFA500);
+            border: none; 
+            padding: 15px; 
+            margin: 5px 0; 
+            border-radius: 10px; 
+            cursor: pointer; 
+            width: 100%; 
+            font-size: 16px; 
+            font-weight: bold;
+            color: #000;
+            transition: all 0.3s ease;
+        }
+        
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(255,215,0,0.4);
+        }
+        
+        button:disabled { 
+            background: #666; 
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+        
+        .slots-container {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin: 20px 0;
+            perspective: 1000px;
+        }
+        
+        .slot {
+            width: 80px;
+            height: 80px;
+            background: rgba(255,255,255,0.9);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 40px;
+            border: 3px solid gold;
+            transform-style: preserve-3d;
+            transition: transform 0.5s ease;
+        }
+        
+        .slot.spinning {
+            animation: spin 0.1s infinite;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotateX(0deg); }
+            100% { transform: rotateX(360deg); }
+        }
+        
+        .game-result { 
+            text-align: center; 
+            margin: 15px 0; 
+            font-size: 18px; 
+            min-height: 25px;
+        }
+        
+        input { 
+            width: 100%; 
+            padding: 12px; 
+            margin: 10px 0; 
+            border-radius: 8px; 
+            border: 2px solid gold;
+            background: rgba(255,255,255,0.9);
+            font-size: 16px;
+        }
+        
+        .win { color: #4CAF50; font-weight: bold; }
         .lose { color: #f44336; }
-        .loading { color: #ffd700; }
+        .loading { color: #FFD700; }
         .success { color: #4CAF50; }
+        
+        .wallet-buttons {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-top: 15px;
+        }
+        
+        .withdraw-btn {
+            background: linear-gradient(45deg, #4CAF50, #45a049);
+            color: white;
+        }
+        
+        .convert-btn {
+            background: linear-gradient(45deg, #2196F3, #1976D2);
+            color: white;
+        }
     </style>
 </head>
 <body>
-    <div class="balance">💰 Баланс: <span id="balance">100</span> монет</div>
+    <div class="header">
+        <h1>🎰 CryptoWin Casino</h1>
+    </div>
+    
+    <div class="balance-container">
+        <div class="balance-item">
+            <div>💰 Монеты</div>
+            <div class="balance-number" id="coins-balance">1000</div>
+        </div>
+        <div class="balance-item">
+            <div>⭐ Звезды</div>
+            <div class="balance-number" id="stars-balance">5</div>
+        </div>
+    </div>
     
     <div class="section">
         <h3>🎰 ИГРОВЫЕ АВТОМАТЫ</h3>
-        <div class="slots">
-            <span id="slot1">🍒</span>
-            <span id="slot2">🍒</span>
-            <span id="slot3">🍒</span>
+        <div class="slots-container">
+            <div class="slot" id="slot1">🎁</div>
+            <div class="slot" id="slot2">💎</div>
+            <div class="slot" id="slot3">💰</div>
         </div>
-        <button onclick="spinSlots()" id="slots-btn">🎰 Крутить (10 монет)</button>
+        <button onclick="spinSlots()" id="slots-btn">🎰 Крутить за 10 монет</button>
         <div class="game-result" id="slots-result"></div>
     </div>
 
     <div class="section">
-        <h3>🔢 УГАДАЙ ЧИСЛО</h3>
-        <input type="number" id="numberGuess" placeholder="Число от 1000 до 9999" min="1000" max="9999">
-        <button onclick="guessNumber()" id="number-btn">🎯 Угадать (20 монет)</button>
+        <h3>🎯 УГАДАЙ ЧИСЛО</h3>
+        <input type="number" id="numberGuess" placeholder="Введите число от 1000 до 9999" min="1000" max="9999">
+        <button onclick="guessNumber()" id="number-btn">🎯 Сделать ставку (20 монет)</button>
         <div class="game-result" id="number-result"></div>
     </div>
 
     <div class="section">
-        <h3>🎲 КОСТИ</h3>
+        <h3>🎲 КОСТИ УДАЧИ</h3>
         <input type="number" id="diceGuess" placeholder="Сумма от 2 до 12" min="2" max="12">
         <button onclick="rollDice()" id="dice-btn">🎲 Бросить кости (15 монет)</button>
         <div class="game-result" id="dice-result"></div>
     </div>
 
     <div class="section">
-        <h3>💰 КОШЕЛЕК</h3>
-        <button onclick="showWallet()">💳 Мой кошелек</button>
-        <button onclick="withdrawFunds()">💸 Вывод средств</button>
-        <button onclick="convertToStars()">⭐ Конвертировать в звезды</button>
+        <h3>💼 МОЙ КОШЕЛЕК</h3>
+        <div class="wallet-buttons">
+            <button onclick="showWallet()">💳 Инфо кошелька</button>
+            <button onclick="withdrawFunds()" class="withdraw-btn">💸 Вывод средств</button>
+            <button onclick="convertToStars()" class="convert-btn">⭐ 500 монет → 1 звезда</button>
+            <button onclick="convertFromStars()" class="convert-btn">✨ 1 звезда → 500 монет</button>
+        </div>
     </div>
 
     <script>
         let tg = window.Telegram.WebApp;
         tg.expand();
         
-        // Устанавливаем начальный баланс
-        let userBalance = 100;
-        document.getElementById('balance').textContent = userBalance;
+        // Баланс пользователя
+        let userData = {
+            coins: 1000,
+            stars: 5
+        };
         
-        // Обновляем баланс после игр
-        function updateBalance(newBalance) {
-            userBalance = newBalance;
-            document.getElementById('balance').textContent = userBalance;
+        // Символы для слотов (премиальные)
+        const slotSymbols = ['🎁', '💎', '💰', '👑', '⚡', '🌟', '🔥', '🍀'];
+        
+        // Обновляем отображение баланса
+        function updateBalanceDisplay() {
+            document.getElementById('coins-balance').textContent = userData.coins;
+            document.getElementById('stars-balance').textContent = userData.stars;
         }
         
         // Блокировка кнопок во время выполнения
@@ -83,123 +235,154 @@
             }
         }
         
+        // Анимация вращения слотов
+        function spinSlotsAnimation(duration = 2000) {
+            const slots = ['slot1', 'slot2', 'slot3'];
+            
+            // Добавляем класс вращения
+            slots.forEach(slotId => {
+                document.getElementById(slotId).classList.add('spinning');
+            });
+            
+            // Останавливаем вращение через указанное время
+            setTimeout(() => {
+                slots.forEach(slotId => {
+                    document.getElementById(slotId).classList.remove('spinning');
+                    
+                    // Устанавливаем случайные символы
+                    const randomSymbol = slotSymbols[Math.floor(Math.random() * slotSymbols.length)];
+                    document.getElementById(slotId).textContent = randomSymbol;
+                });
+            }, duration);
+        }
+        
         // 🎰 СЛОТЫ
         function spinSlots() {
-            if (userBalance < 10) {
-                document.getElementById('slots-result').textContent = "❌ Недостаточно монет! Нужно 10 монет";
-                document.getElementById('slots-result').className = "game-result lose";
+            if (userData.coins < 10) {
+                showResult('slots-result', "❌ Недостаточно монет! Нужно 10 монет", 'lose');
                 return;
             }
             
             const btn = document.getElementById('slots-btn');
             setButtonLoading('slots-btn', true);
             
-            document.getElementById('slots-result').textContent = "🎰 Крутим...";
-            document.getElementById('slots-result').className = "game-result loading";
+            // Запускаем анимацию
+            spinSlotsAnimation(2000);
             
-            // Временно уменьшаем баланс для отображения
-            updateBalance(userBalance - 10);
+            // Временно уменьшаем баланс
+            userData.coins -= 10;
+            updateBalanceDisplay();
+            
+            showResult('slots-result', "🎰 Барабаны крутятся...", 'loading');
             
             sendToBot({action: 'game', type: 'slots', bet: 10});
             
-            // Авторазблокировка через 3 секунды
             setTimeout(() => {
                 setButtonLoading('slots-btn', false);
-                document.getElementById('slots-result').textContent = "✅ Результат отправлен в чат!";
-                document.getElementById('slots-result').className = "game-result success";
-            }, 3000);
+                showResult('slots-result', "✅ Результат отправлен в чат с ботом!", 'success');
+            }, 2500);
         }
         
         // 🔢 УГАДАЙ ЧИСЛО  
         function guessNumber() {
             const guess = document.getElementById('numberGuess').value;
             if(!guess || guess < 1000 || guess > 9999) {
-                document.getElementById('number-result').textContent = "❌ Введите число от 1000 до 9999";
-                document.getElementById('number-result').className = "game-result lose";
+                showResult('number-result', "❌ Введите число от 1000 до 9999", 'lose');
                 return;
             }
             
-            if (userBalance < 20) {
-                document.getElementById('number-result').textContent = "❌ Недостаточно монет! Нужно 20 монет";
-                document.getElementById('number-result').className = "game-result lose";
+            if (userData.coins < 20) {
+                showResult('number-result', "❌ Недостаточно монет! Нужно 20 монет", 'lose');
                 return;
             }
             
             const btn = document.getElementById('number-btn');
             setButtonLoading('number-btn', true);
             
-            document.getElementById('number-result').textContent = "🔢 Проверяем...";
-            document.getElementById('number-result').className = "game-result loading";
+            // Временно уменьшаем баланс
+            userData.coins -= 20;
+            updateBalanceDisplay();
             
-            // Временно уменьшаем баланс для отображения
-            updateBalance(userBalance - 20);
+            showResult('number-result', "🎯 Проверяем вашу ставку...", 'loading');
             
             sendToBot({action: 'game', type: 'number', guess: parseInt(guess), bet: 20});
             
             setTimeout(() => {
                 setButtonLoading('number-btn', false);
-                document.getElementById('number-result').textContent = "✅ Результат отправлен в чат!";
-                document.getElementById('number-result').className = "game-result success";
-            }, 3000);
+                showResult('number-result', "✅ Результат отправлен в чат с ботом!", 'success');
+                document.getElementById('numberGuess').value = '';
+            }, 2000);
         }
         
         // 🎲 КОСТИ
         function rollDice() {
             const guess = document.getElementById('diceGuess').value;
             if(!guess || guess < 2 || guess > 12) {
-                document.getElementById('dice-result').textContent = "❌ Введите сумму от 2 до 12";
-                document.getElementById('dice-result').className = "game-result lose";
+                showResult('dice-result', "❌ Введите сумму от 2 до 12", 'lose');
                 return;
             }
             
-            if (userBalance < 15) {
-                document.getElementById('dice-result').textContent = "❌ Недостаточно монет! Нужно 15 монет";
-                document.getElementById('dice-result').className = "game-result lose";
+            if (userData.coins < 15) {
+                showResult('dice-result', "❌ Недостаточно монет! Нужно 15 монет", 'lose');
                 return;
             }
             
             const btn = document.getElementById('dice-btn');
             setButtonLoading('dice-btn', true);
             
-            document.getElementById('dice-result').textContent = "🎲 Бросаем...";
-            document.getElementById('dice-result').className = "game-result loading";
+            // Временно уменьшаем баланс
+            userData.coins -= 15;
+            updateBalanceDisplay();
             
-            // Временно уменьшаем баланс для отображения
-            updateBalance(userBalance - 15);
+            showResult('dice-result', "🎲 Бросаем кости...", 'loading');
             
             sendToBot({action: 'game', type: 'dice', guess: parseInt(guess), bet: 15});
             
             setTimeout(() => {
                 setButtonLoading('dice-btn', false);
-                document.getElementById('dice-result').textContent = "✅ Результат отправлен в чат!";
-                document.getElementById('dice-result').className = "game-result success";
-            }, 3000);
+                showResult('dice-result', "✅ Результат отправлен в чат с ботом!", 'success');
+                document.getElementById('diceGuess').value = '';
+            }, 2000);
         }
         
         // 💰 КОШЕЛЕК
         function showWallet() {
             sendToBot({action: 'wallet_info'});
-            alert('💼 Информация о кошельке отправлена в чат с ботом');
+            showAlert('💼 Запрос информации о кошельке отправлен в чат с ботом');
         }
         
         function withdrawFunds() {
-            if (userBalance < 1000) {
-                alert(`❌ Недостаточно средств! Минимум 1000 монет, у вас ${userBalance}`);
+            if (userData.coins < 1000) {
+                showAlert(`❌ Недостаточно средств для вывода! Минимум 1000 монет, у вас ${userData.coins}`);
                 return;
             }
             sendToBot({action: 'withdraw'});
-            alert('💸 Запрос на вывод отправлен в чат с ботом');
+            showAlert('💸 Запрос на вывод средств отправлен в чат с ботом');
         }
         
         function convertToStars() {
-            if (userBalance < 500) {
-                alert(`❌ Недостаточно монет! Нужно 500 монет, у вас ${userBalance}`);
+            if (userData.coins < 500) {
+                showAlert(`❌ Недостаточно монет для конвертации! Нужно 500 монет, у вас ${userData.coins}`);
                 return;
             }
             sendToBot({action: 'convert_stars'});
-            // Временно уменьшаем баланс для отображения
-            updateBalance(userBalance - 500);
-            alert('⭐ Запрос на конвертацию отправлен в чат с ботом');
+            // Временно обновляем баланс
+            userData.coins -= 500;
+            userData.stars += 1;
+            updateBalanceDisplay();
+            showAlert('⭐ Конвертация 500 монет в 1 звезду отправлена в чат с ботом');
+        }
+        
+        function convertFromStars() {
+            if (userData.stars < 1) {
+                showAlert(`❌ Недостаточно звезд для конвертации! Нужно 1 звезда, у вас ${userData.stars}`);
+                return;
+            }
+            // Временно обновляем баланс
+            userData.stars -= 1;
+            userData.coins += 500;
+            updateBalanceDisplay();
+            showAlert('✨ Конвертация 1 звезды в 500 монет отправлена в чат с ботом');
         }
         
         // 📤 ОТПРАВКА ДАННЫХ БОТУ
@@ -207,34 +390,36 @@
             tg.sendData(JSON.stringify(data));
         }
         
-        // Обновляем слоты при клике
-        function updateSlots() {
-            const symbols = ['🍒', '🍋', '🍊', '⭐', '🔔', '💎', '🍇', '🥝'];
-            document.getElementById('slot1').textContent = symbols[Math.floor(Math.random() * symbols.length)];
-            document.getElementById('slot2').textContent = symbols[Math.floor(Math.random() * symbols.length)];
-            document.getElementById('slot3').textContent = symbols[Math.floor(Math.random() * symbols.length)];
+        // Вспомогательные функции
+        function showResult(elementId, message, type) {
+            const element = document.getElementById(elementId);
+            element.textContent = message;
+            element.className = `game-result ${type}`;
         }
         
-        // Анимация слотов при загрузке
-        setInterval(updateSlots, 500);
+        function showAlert(message) {
+            alert(message);
+        }
+        
+        // Инициализация
+        updateBalanceDisplay();
         
         // Автоматическое очищение статусов через 5 секунд
         setInterval(() => {
             const results = ['slots-result', 'number-result', 'dice-result'];
             results.forEach(id => {
                 const element = document.getElementById(id);
-                if (element && (element.textContent.includes('отправлен') || element.className.includes('success'))) {
+                if (element && element.textContent.includes('отправлен')) {
                     element.textContent = "";
                     element.className = "game-result";
                 }
             });
         }, 5000);
         
-        // Очистка полей ввода после успешной отправки
+        // Случайная анимация слотов при загрузке (только один раз)
         setTimeout(() => {
-            document.getElementById('numberGuess').value = '';
-            document.getElementById('diceGuess').value = '';
-        }, 3500);
+            spinSlotsAnimation(1000);
+        }, 500);
     </script>
 </body>
 </html>
