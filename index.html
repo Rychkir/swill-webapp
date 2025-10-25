@@ -45,11 +45,6 @@
             text-shadow: 0 2px 10px rgba(255,215,0,0.3);
         }
 
-        .header p {
-            color: #cccccc;
-            font-size: 14px;
-        }
-
         .balance-container {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -63,11 +58,6 @@
             border-radius: 15px;
             text-align: center;
             border: 1px solid rgba(255,215,0,0.3);
-            transition: transform 0.3s ease;
-        }
-
-        .balance-card:hover {
-            transform: translateY(-3px);
         }
 
         .balance-card.coins {
@@ -141,10 +131,6 @@
             box-shadow: 0 8px 20px rgba(102, 126, 234, 0.4);
         }
 
-        .game-btn:active {
-            transform: translateY(0);
-        }
-
         .game-btn.slots {
             background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
         }
@@ -159,11 +145,6 @@
 
         .game-btn.poker {
             background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
-        }
-
-        .premium-section {
-            background: linear-gradient(135deg, rgba(255,215,0,0.2), rgba(255,165,0,0.15));
-            border: 2px solid rgba(255,215,0,0.4);
         }
 
         .btn {
@@ -184,10 +165,6 @@
         .btn:hover {
             transform: translateY(-2px);
             box-shadow: 0 6px 20px rgba(255,215,0,0.4);
-        }
-
-        .btn:active {
-            transform: translateY(0);
         }
 
         .btn.premium {
@@ -232,9 +209,8 @@
             color: #3498db;
         }
 
-        .game-controls {
+        .game-interface {
             display: none;
-            margin-top: 15px;
         }
 
         .input-field {
@@ -280,8 +256,39 @@
             animation: spin 0.1s infinite;
         }
 
-        .hidden {
+        .registration-section {
+            background: linear-gradient(135deg, rgba(255,215,0,0.2), rgba(255,165,0,0.15));
+            border: 2px solid rgba(255,215,0,0.4);
+        }
+
+        .tab-container {
+            display: flex;
+            margin-bottom: 15px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 10px;
+            padding: 5px;
+        }
+
+        .tab {
+            flex: 1;
+            padding: 10px;
+            text-align: center;
+            cursor: pointer;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .tab.active {
+            background: rgba(255,215,0,0.3);
+            color: #FFD700;
+        }
+
+        .tab-content {
             display: none;
+        }
+
+        .tab-content.active {
+            display: block;
         }
 
         .footer {
@@ -325,86 +332,107 @@
             <p>Элитный игровой опыт в Telegram</p>
         </div>
 
-        <div class="balance-container">
-            <div class="balance-card coins">
-                <div class="balance-icon">💰</div>
-                <div class="balance-label">Монеты</div>
-                <div class="balance-value" id="coins-balance">300</div>
+        <!-- Регистрация -->
+        <div id="registration-section" class="section registration-section">
+            <div class="section-title">📝 Регистрация</div>
+            <div class="tab-container">
+                <div class="tab active" onclick="switchTab('email-tab')">📧 Email</div>
+                <div class="tab" onclick="switchTab('phone-tab')">📱 Телефон</div>
             </div>
-            <div class="balance-card stars">
-                <div class="balance-icon">⭐</div>
-                <div class="balance-label">Звезды</div>
-                <div class="balance-value" id="stars-balance">0</div>
+            
+            <div id="email-tab" class="tab-content active">
+                <input type="email" id="email-input" class="input-field" placeholder="Введите ваш email">
+                <button class="btn" onclick="registerEmail()">📧 Зарегистрироваться</button>
             </div>
-        </div>
-
-        <div class="section">
-            <div class="section-title">🎮 Быстрые игры</div>
-            <div class="games-grid">
-                <button class="game-btn slots" onclick="playGame('slots')">
-                    🎰 Автоматы<br><small>10 монет</small>
-                </button>
-                <button class="game-btn number" onclick="playGame('number')">
-                    🔢 Угадай число<br><small>20 монет</small>
-                </button>
-                <button class="game-btn dice" onclick="playGame('dice')">
-                    🎲 Кости<br><small>15 монет</small>
-                </button>
-                <button class="game-btn poker" onclick="playGame('poker')">
-                    🎴 Покер<br><small>50 монет</small>
-                </button>
+            
+            <div id="phone-tab" class="tab-content">
+                <input type="tel" id="phone-input" class="input-field" placeholder="+7XXX... +380XXX... +375XXX...">
+                <button class="btn" onclick="addPhone()">📱 Добавить телефон (+100 монет)</button>
+            </div>
+            
+            <div id="verification-section" style="display: none;">
+                <input type="text" id="verification-code" class="input-field" placeholder="Введите код подтверждения">
+                <button class="btn" onclick="verify2FA()">✅ Подтвердить</button>
             </div>
         </div>
 
-        <div id="slots-interface" class="game-controls">
-            <div class="section">
-                <div class="section-title">🎰 Игровые автоматы</div>
-                <div class="slots-container">
-                    <div class="slot" id="slot1">🎁</div>
-                    <div class="slot" id="slot2">💎</div>
-                    <div class="slot" id="slot3">💰</div>
+        <!-- Основной интерфейс (скрыт до регистрации) -->
+        <div id="main-interface" style="display: none;">
+            <div class="balance-container">
+                <div class="balance-card coins">
+                    <div class="balance-icon">💰</div>
+                    <div class="balance-label">Монеты</div>
+                    <div class="balance-value" id="coins-balance">0</div>
                 </div>
-                <button class="btn" onclick="spinSlots()">🎰 Крутить за 10 монет</button>
-                <div id="slots-result" class="status-message"></div>
+                <div class="balance-card stars">
+                    <div class="balance-icon">⭐</div>
+                    <div class="balance-label">Звезды</div>
+                    <div class="balance-value" id="stars-balance">0</div>
+                </div>
             </div>
-        </div>
 
-        <div id="number-interface" class="game-controls">
             <div class="section">
-                <div class="section-title">🔢 Угадай число</div>
-                <input type="number" id="numberGuess" class="input-field" 
-                       placeholder="Введите число от 1000 до 9999" min="1000" max="9999">
-                <button class="btn" onclick="guessNumber()">🎯 Сделать ставку (20 монет)</button>
-                <div id="number-result" class="status-message"></div>
+                <div class="section-title">🎮 Игровой зал</div>
+                <div class="games-grid">
+                    <button class="game-btn slots" onclick="showGameInterface('slots')">
+                        🎰 Автоматы<br><small>10 монет</small>
+                    </button>
+                    <button class="game-btn number" onclick="showGameInterface('number')">
+                        🔢 Угадай число<br><small>20 монет</small>
+                    </button>
+                    <button class="game-btn dice" onclick="showGameInterface('dice')">
+                        🎲 Кости<br><small>15 монет</small>
+                    </button>
+                    <button class="game-btn poker" onclick="showGameInterface('poker')">
+                        🎴 Покер<br><small>50 монет</small>
+                    </button>
+                </div>
             </div>
-        </div>
 
-        <div id="dice-interface" class="game-controls">
+            <!-- Интерфейсы игр -->
+            <div id="slots-interface" class="game-interface">
+                <div class="section">
+                    <div class="section-title">🎰 Игровые автоматы</div>
+                    <div class="slots-container">
+                        <div class="slot" id="slot1">🎁</div>
+                        <div class="slot" id="slot2">💎</div>
+                        <div class="slot" id="slot3">💰</div>
+                    </div>
+                    <button class="btn" onclick="playSlots()">🎰 Крутить за 10 монет</button>
+                </div>
+            </div>
+
+            <div id="number-interface" class="game-interface">
+                <div class="section">
+                    <div class="section-title">🔢 Угадай число</div>
+                    <input type="number" id="number-guess" class="input-field" placeholder="Число от 1000 до 9999">
+                    <button class="btn" onclick="playNumber()">🎯 Сделать ставку (20 монет)</button>
+                </div>
+            </div>
+
+            <div id="dice-interface" class="game-interface">
+                <div class="section">
+                    <div class="section-title">🎲 Кости удачи</div>
+                    <input type="number" id="dice-guess" class="input-field" placeholder="Сумма от 2 до 12">
+                    <button class="btn" onclick="playDice()">🎲 Бросить кости (15 монет)</button>
+                </div>
+            </div>
+
+            <div id="poker-interface" class="game-interface">
+                <div class="section">
+                    <div class="section-title">🎴 Покер</div>
+                    <button class="btn" onclick="playPoker()">🎴 Играть в покер (50 монет)</button>
+                </div>
+            </div>
+
             <div class="section">
-                <div class="section-title">🎲 Кости удачи</div>
-                <input type="number" id="diceGuess" class="input-field" 
-                       placeholder="Сумма от 2 до 12" min="2" max="12">
-                <button class="btn" onclick="rollDice()">🎲 Бросить кости (15 монет)</button>
-                <div id="dice-result" class="status-message"></div>
-            </div>
-        </div>
-
-        <div id="poker-interface" class="game-controls">
-            <div class="section">
-                <div class="section-title">🎴 Покер</div>
-                <button class="btn" onclick="playPoker()">🎴 Играть в покер (50 монет)</button>
-                <div id="poker-result" class="status-message"></div>
-            </div>
-        </div>
-
-        <div class="section premium-section">
-            <div class="section-title">👑 Премиум возможности</div>
-            <button class="btn premium" onclick="showPremium()">💎 Premium подписка</button>
-            <button class="btn donate" onclick="showDonate()">⭐ Купить звезды</button>
-            <button class="btn secondary" onclick="showWallet()">💰 Инфо кошелька</button>
-            <div class="conversion-buttons" style="margin-top: 15px;">
-                <button class="btn secondary" onclick="convertToStars()">⭐ 500 монет → 1 звезда</button>
-                <button class="btn secondary" onclick="convertFromStars()">✨ 1 звезда → 500 монет</button>
+                <div class="section-title">💎 Дополнительно</div>
+                <button class="btn premium" onclick="showPremium()">👑 Premium подписка</button>
+                <button class="btn donate" onclick="showDonate()">⭐ Купить звезды</button>
+                <div style="margin-top: 15px;">
+                    <button class="btn secondary" onclick="convertToStars()">⭐ 500 монет → 1 звезда</button>
+                    <button class="btn secondary" onclick="convertFromStars()">✨ 1 звезда → 500 монет</button>
+                </div>
             </div>
         </div>
 
@@ -422,14 +450,103 @@
         tg.enableClosingConfirmation();
         
         let userBalance = {
-            coins: 300,
+            coins: 0,
             stars: 0
         };
 
+        let isRegistered = false;
+
         function initApp() {
+            // Проверяем регистрацию и загружаем баланс
+            checkRegistration();
+        }
+
+        function checkRegistration() {
+            // В реальности здесь должен быть запрос к боту для проверки статуса
+            // Для демонстрации используем localStorage
+            const registered = localStorage.getItem('cryptowin_registered');
+            if (registered === 'true') {
+                isRegistered = true;
+                showMainInterface();
+                userBalance.coins = parseInt(localStorage.getItem('cryptowin_coins') || '300');
+                userBalance.stars = parseInt(localStorage.getItem('cryptowin_stars') || '0');
+                updateBalanceDisplay();
+            }
+        }
+
+        function showMainInterface() {
+            document.getElementById('registration-section').style.display = 'none';
+            document.getElementById('main-interface').style.display = 'block';
+        }
+
+        function switchTab(tabName) {
+            // Скрываем все табы
+            document.querySelectorAll('.tab-content').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            document.querySelectorAll('.tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            
+            // Показываем выбранный таб
+            document.getElementById(tabName).classList.add('active');
+            event.target.classList.add('active');
+        }
+
+        function registerEmail() {
+            const email = document.getElementById('email-input').value;
+            if (!email || !email.includes('@')) {
+                showStatus('❌ Введите корректный email', 'error');
+                return;
+            }
+
+            sendToBot({
+                action: 'register_email',
+                email: email
+            });
+
+            document.getElementById('verification-section').style.display = 'block';
+            showStatus('📧 Код подтверждения отправлен на email', 'info');
+        }
+
+        function addPhone() {
+            const phone = document.getElementById('phone-input').value;
+            if (!phone) {
+                showStatus('❌ Введите номер телефона', 'error');
+                return;
+            }
+
+            sendToBot({
+                action: 'add_phone',
+                phone: phone
+            });
+
+            showStatus('📱 Запрос на добавление телефона отправлен', 'info');
+        }
+
+        function verify2FA() {
+            const code = document.getElementById('verification-code').value;
+            if (!code) {
+                showStatus('❌ Введите код подтверждения', 'error');
+                return;
+            }
+
+            sendToBot({
+                action: 'verify_2fa',
+                code: code
+            });
+
+            // В реальности здесь должен быть ответ от бота
+            // Для демонстрации сразу регистрируем
+            isRegistered = true;
+            localStorage.setItem('cryptowin_registered', 'true');
+            localStorage.setItem('cryptowin_coins', '300');
+            localStorage.setItem('cryptowin_stars', '0');
+            showMainInterface();
+            userBalance.coins = 300;
+            userBalance.stars = 0;
             updateBalanceDisplay();
-            showStatus('Добро пожаловать в CryptoWin Premium!', 'info');
-            sendToBot({action: 'sync_balance'});
+            showStatus('🎉 Регистрация завершена!', 'success');
         }
 
         function updateBalanceDisplay() {
@@ -449,120 +566,89 @@
         }
 
         function hideAllGameInterfaces() {
-            document.querySelectorAll('.game-controls').forEach(el => {
+            document.querySelectorAll('.game-interface').forEach(el => {
                 el.style.display = 'none';
             });
         }
 
-        function playGame(gameType) {
-            const costs = {
-                'slots': 10,
-                'number': 20,
-                'dice': 15,
-                'poker': 50
-            };
-            
-            const cost = costs[gameType];
-            
-            if (userBalance.coins < cost) {
-                showStatus(`❌ Недостаточно монет! Нужно: ${cost}, у вас: ${userBalance.coins}`, 'error');
-                return;
-            }
-            
+        function showGameInterface(gameType) {
             hideAllGameInterfaces();
-            
-            const interfaceId = `${gameType}-interface`;
-            const interfaceEl = document.getElementById(interfaceId);
-            if (interfaceEl) {
-                interfaceEl.style.display = 'block';
-            }
+            document.getElementById(`${gameType}-interface`).style.display = 'block';
         }
 
-        function spinSlots() {
+        function playSlots() {
             if (userBalance.coins < 10) {
                 showStatus('❌ Недостаточно монет!', 'error');
                 return;
             }
 
-            userBalance.coins -= 10;
-            updateBalanceDisplay();
-            
             const slots = ['slot1', 'slot2', 'slot3'];
-            
             slots.forEach(slotId => {
                 const slot = document.getElementById(slotId);
                 slot.classList.add('spinning');
             });
-            
+
             sendToBot({
                 action: 'game',
                 type: 'slots',
                 bet: 10
             });
-            
+
             setTimeout(() => {
                 slots.forEach(slotId => {
                     const slot = document.getElementById(slotId);
                     slot.classList.remove('spinning');
-                    
                     const symbols = ['🎁', '💎', '💰', '👑', '⚡', '🌟', '🔥', '🍀'];
                     const randomSymbol = symbols[Math.floor(Math.random() * symbols.length)];
                     slot.textContent = randomSymbol;
                 });
-                
                 showStatus('✅ Игра отправлена! Результат в чате.', 'success');
             }, 2000);
         }
 
-        function guessNumber() {
-            const guess = document.getElementById('numberGuess').value;
+        function playNumber() {
+            const guess = document.getElementById('number-guess').value;
             if (!guess || guess < 1000 || guess > 9999) {
                 showStatus('❌ Введите число от 1000 до 9999', 'error');
                 return;
             }
-            
+
             if (userBalance.coins < 20) {
                 showStatus('❌ Недостаточно монет!', 'error');
                 return;
             }
 
-            userBalance.coins -= 20;
-            updateBalanceDisplay();
-            
             sendToBot({
                 action: 'game',
                 type: 'number',
                 guess: parseInt(guess),
                 bet: 20
             });
-            
-            document.getElementById('numberGuess').value = '';
+
+            document.getElementById('number-guess').value = '';
             showStatus('✅ Ставка принята! Результат в чате.', 'success');
         }
 
-        function rollDice() {
-            const guess = document.getElementById('diceGuess').value;
+        function playDice() {
+            const guess = document.getElementById('dice-guess').value;
             if (!guess || guess < 2 || guess > 12) {
                 showStatus('❌ Введите сумму от 2 до 12', 'error');
                 return;
             }
-            
+
             if (userBalance.coins < 15) {
                 showStatus('❌ Недостаточно монет!', 'error');
                 return;
             }
 
-            userBalance.coins -= 15;
-            updateBalanceDisplay();
-            
             sendToBot({
                 action: 'game',
                 type: 'dice',
                 guess: parseInt(guess),
                 bet: 15
             });
-            
-            document.getElementById('diceGuess').value = '';
+
+            document.getElementById('dice-guess').value = '';
             showStatus('✅ Кости брошены! Результат в чате.', 'success');
         }
 
@@ -572,31 +658,21 @@
                 return;
             }
 
-            userBalance.coins -= 50;
-            updateBalanceDisplay();
-            
             sendToBot({
                 action: 'game',
                 type: 'poker',
                 bet: 50
             });
-            
+
             showStatus('✅ Покер запущен! Результат в чате.', 'success');
         }
 
-        function showWallet() {
-            sendToBot({action: 'wallet_info'});
-            showStatus('💼 Запрос информации о кошельке отправлен', 'info');
-        }
-
         function showPremium() {
-            sendToBot({action: 'premium_info'});
-            showStatus('👑 Информация о Premium подписке отправлена', 'info');
+            showStatus('👑 Информация о Premium подписке отправлена в чат', 'info');
         }
 
         function showDonate() {
-            sendToBot({action: 'donate_info'});
-            showStatus('💎 Информация о покупке звезд отправлена', 'info');
+            showStatus('💎 Информация о покупке звезд отправлена в чат', 'info');
         }
 
         function convertToStars() {
@@ -606,10 +682,7 @@
             }
             
             sendToBot({action: 'convert_stars'});
-            userBalance.coins -= 500;
-            userBalance.stars += 1;
-            updateBalanceDisplay();
-            showStatus('✅ Конвертация отправлена', 'success');
+            showStatus('✅ Запрос на конвертацию отправлен', 'success');
         }
 
         function convertFromStars() {
@@ -619,10 +692,7 @@
             }
             
             sendToBot({action: 'convert_from_stars'});
-            userBalance.stars -= 1;
-            userBalance.coins += 500;
-            updateBalanceDisplay();
-            showStatus('✅ Конвертация отправлена', 'success');
+            showStatus('✅ Запрос на конвертацию отправлен', 'success');
         }
 
         function sendToBot(data) {
