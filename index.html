@@ -293,7 +293,6 @@
             border-top: 1px solid rgba(255,255,255,0.1);
         }
 
-        /* Адаптивность */
         @media (max-width: 480px) {
             .container {
                 padding: 10px;
@@ -357,7 +356,6 @@
             </div>
         </div>
 
-        <!-- Игровые интерфейсы -->
         <div id="slots-interface" class="game-controls">
             <div class="section">
                 <div class="section-title">🎰 Игровые автоматы</div>
@@ -391,11 +389,23 @@
             </div>
         </div>
 
+        <div id="poker-interface" class="game-controls">
+            <div class="section">
+                <div class="section-title">🎴 Покер</div>
+                <button class="btn" onclick="playPoker()">🎴 Играть в покер (50 монет)</button>
+                <div id="poker-result" class="status-message"></div>
+            </div>
+        </div>
+
         <div class="section premium-section">
             <div class="section-title">👑 Премиум возможности</div>
             <button class="btn premium" onclick="showPremium()">💎 Premium подписка</button>
             <button class="btn donate" onclick="showDonate()">⭐ Купить звезды</button>
             <button class="btn secondary" onclick="showWallet()">💰 Инфо кошелька</button>
+            <div class="conversion-buttons" style="margin-top: 15px;">
+                <button class="btn secondary" onclick="convertToStars()">⭐ 500 монет → 1 звезда</button>
+                <button class="btn secondary" onclick="convertFromStars()">✨ 1 звезда → 500 монет</button>
+            </div>
         </div>
 
         <div id="status-message" class="status-message"></div>
@@ -416,24 +426,17 @@
             stars: 0
         };
 
-        // Инициализация Web App
         function initApp() {
             updateBalanceDisplay();
             showStatus('Добро пожаловать в CryptoWin Premium!', 'info');
-            
-            // Запрос актуального баланса у бота
-            setTimeout(() => {
-                sendToBot({action: 'sync_balance'});
-            }, 1000);
+            sendToBot({action: 'sync_balance'});
         }
 
-        // Обновление отображения баланса
         function updateBalanceDisplay() {
             document.getElementById('coins-balance').textContent = userBalance.coins;
             document.getElementById('stars-balance').textContent = userBalance.stars;
         }
 
-        // Показать статус сообщение
         function showStatus(message, type = 'info') {
             const statusEl = document.getElementById('status-message');
             statusEl.textContent = message;
@@ -445,18 +448,13 @@
             }, 5000);
         }
 
-        // Скрыть все игровые интерфейсы
         function hideAllGameInterfaces() {
-            const interfaces = document.querySelectorAll('.game-controls');
-            interfaces.forEach(interface => {
-                interface.style.display = 'none';
+            document.querySelectorAll('.game-controls').forEach(el => {
+                el.style.display = 'none';
             });
         }
 
-        // Основная функция запуска игр
         function playGame(gameType) {
-            hideAllGameInterfaces();
-            
             const costs = {
                 'slots': 10,
                 'number': 20,
@@ -464,40 +462,42 @@
                 'poker': 50
             };
             
-            if (userBalance.coins < costs[gameType]) {
-                showStatus(`❌ Недостаточно монет! Нужно: ${costs[gameType]}, у вас: ${userBalance.coins}`, 'error');
+            const cost = costs[gameType];
+            
+            if (userBalance.coins < cost) {
+                showStatus(`❌ Недостаточно монет! Нужно: ${cost}, у вас: ${userBalance.coins}`, 'error');
                 return;
             }
             
-            // Временно списываем средства
-            userBalance.coins -= costs[gameType];
-            updateBalanceDisplay();
+            hideAllGameInterfaces();
             
-            // Показываем соответствующий интерфейс
             const interfaceId = `${gameType}-interface`;
             const interfaceEl = document.getElementById(interfaceId);
             if (interfaceEl) {
                 interfaceEl.style.display = 'block';
             }
-            
-            // Отправляем запрос на игру
-            sendToBot({
-                action: 'game',
-                type: gameType,
-                bet: costs[gameType]
-            });
-            
-            showStatus('🎮 Игра запускается...', 'info');
         }
 
-        // 🎰 Слоты
         function spinSlots() {
+            if (userBalance.coins < 10) {
+                showStatus('❌ Недостаточно монет!', 'error');
+                return;
+            }
+
+            userBalance.coins -= 10;
+            updateBalanceDisplay();
+            
             const slots = ['slot1', 'slot2', 'slot3'];
             
-            // Анимация вращения
             slots.forEach(slotId => {
                 const slot = document.getElementById(slotId);
                 slot.classList.add('spinning');
+            });
+            
+            sendToBot({
+                action: 'game',
+                type: 'slots',
+                bet: 10
             });
             
             setTimeout(() => {
@@ -505,23 +505,29 @@
                     const slot = document.getElementById(slotId);
                     slot.classList.remove('spinning');
                     
-                    // Случайные символы
                     const symbols = ['🎁', '💎', '💰', '👑', '⚡', '🌟', '🔥', '🍀'];
                     const randomSymbol = symbols[Math.floor(Math.random() * symbols.length)];
                     slot.textContent = randomSymbol;
                 });
                 
-                showStatus('✅ Результат отправлен в чат с ботом!', 'success');
+                showStatus('✅ Игра отправлена! Результат в чате.', 'success');
             }, 2000);
         }
 
-        // 🔢 Угадай число
         function guessNumber() {
             const guess = document.getElementById('numberGuess').value;
             if (!guess || guess < 1000 || guess > 9999) {
                 showStatus('❌ Введите число от 1000 до 9999', 'error');
                 return;
             }
+            
+            if (userBalance.coins < 20) {
+                showStatus('❌ Недостаточно монет!', 'error');
+                return;
+            }
+
+            userBalance.coins -= 20;
+            updateBalanceDisplay();
             
             sendToBot({
                 action: 'game',
@@ -534,13 +540,20 @@
             showStatus('✅ Ставка принята! Результат в чате.', 'success');
         }
 
-        // 🎲 Кости
         function rollDice() {
             const guess = document.getElementById('diceGuess').value;
             if (!guess || guess < 2 || guess > 12) {
                 showStatus('❌ Введите сумму от 2 до 12', 'error');
                 return;
             }
+            
+            if (userBalance.coins < 15) {
+                showStatus('❌ Недостаточно монет!', 'error');
+                return;
+            }
+
+            userBalance.coins -= 15;
+            updateBalanceDisplay();
             
             sendToBot({
                 action: 'game',
@@ -553,7 +566,24 @@
             showStatus('✅ Кости брошены! Результат в чате.', 'success');
         }
 
-        // 💼 Кошелек и покупки
+        function playPoker() {
+            if (userBalance.coins < 50) {
+                showStatus('❌ Недостаточно монет!', 'error');
+                return;
+            }
+
+            userBalance.coins -= 50;
+            updateBalanceDisplay();
+            
+            sendToBot({
+                action: 'game',
+                type: 'poker',
+                bet: 50
+            });
+            
+            showStatus('✅ Покер запущен! Результат в чате.', 'success');
+        }
+
         function showWallet() {
             sendToBot({action: 'wallet_info'});
             showStatus('💼 Запрос информации о кошельке отправлен', 'info');
@@ -569,28 +599,36 @@
             showStatus('💎 Информация о покупке звезд отправлена', 'info');
         }
 
-        // 📤 Отправка данных боту
+        function convertToStars() {
+            if (userBalance.coins < 500) {
+                showStatus('❌ Недостаточно монет для конвертации', 'error');
+                return;
+            }
+            
+            sendToBot({action: 'convert_stars'});
+            userBalance.coins -= 500;
+            userBalance.stars += 1;
+            updateBalanceDisplay();
+            showStatus('✅ Конвертация отправлена', 'success');
+        }
+
+        function convertFromStars() {
+            if (userBalance.stars < 1) {
+                showStatus('❌ Недостаточно звезд для конвертации', 'error');
+                return;
+            }
+            
+            sendToBot({action: 'convert_from_stars'});
+            userBalance.stars -= 1;
+            userBalance.coins += 500;
+            updateBalanceDisplay();
+            showStatus('✅ Конвертация отправлена', 'success');
+        }
+
         function sendToBot(data) {
             tg.sendData(JSON.stringify(data));
         }
 
-        // Обработка входящих данных от бота
-        tg.onEvent('webAppDataReceived', (event) => {
-            try {
-                const data = JSON.parse(event.data);
-                if (data.balance !== undefined) {
-                    userBalance.coins = data.balance;
-                }
-                if (data.stars !== undefined) {
-                    userBalance.stars = data.stars;
-                }
-                updateBalanceDisplay();
-            } catch (e) {
-                console.error('Error parsing data:', e);
-            }
-        });
-
-        // Инициализация при загрузке
         document.addEventListener('DOMContentLoaded', initApp);
     </script>
 </body>
