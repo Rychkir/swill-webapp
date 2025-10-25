@@ -313,6 +313,25 @@
             margin-bottom: 10px;
         }
 
+        .game-result {
+            background: rgba(255,255,255,0.1);
+            padding: 15px;
+            border-radius: 10px;
+            margin: 15px 0;
+            border-left: 4px solid #FFD700;
+        }
+
+        .result-title {
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: #FFD700;
+        }
+
+        .result-details {
+            font-size: 14px;
+            margin-bottom: 10px;
+        }
+
         .footer {
             text-align: center;
             margin-top: 25px;
@@ -382,6 +401,11 @@
                     <div class="balance-label">Звезды</div>
                     <div class="balance-value" id="stars-balance">0</div>
                 </div>
+            </div>
+
+            <!-- Результаты игр -->
+            <div id="game-results" style="display: none;">
+                <!-- Здесь будут появляться результаты игр -->
             </div>
 
             <div class="section">
@@ -512,7 +536,119 @@
         let isRegistered = false;
 
         function initApp() {
+            // Слушаем входящие данные от бота
+            tg.onEvent('webAppDataReceived', (event) => {
+                try {
+                    const data = JSON.parse(event.data);
+                    handleBotResponse(data);
+                } catch (e) {
+                    console.error('Error parsing bot data:', e);
+                }
+            });
+            
             checkRegistration();
+        }
+
+        function handleBotResponse(data) {
+            const action = data.action;
+            
+            if (action === 'game_result') {
+                showGameResult(data);
+            } else if (action === 'registration') {
+                handleRegistrationResponse(data);
+            } else if (action === 'phone') {
+                handlePhoneResponse(data);
+            } else if (action === 'convert') {
+                handleConvertResponse(data);
+            } else if (action === 'premium' || action === 'stars') {
+                showStatus(data.message, 'info');
+            }
+        }
+
+        function showGameResult(data) {
+            if (!data.success) {
+                showStatus(data.message, 'error');
+                return;
+            }
+
+            const resultsDiv = document.getElementById('game-results');
+            resultsDiv.style.display = 'block';
+            
+            let resultHTML = '<div class="game-result">';
+            resultHTML += `<div class="result-title">🎮 Результат игры</div>`;
+            resultHTML += `<div class="result-details">${data.message}</div>`;
+            
+            if (data.new_balance !== undefined) {
+                userBalance.coins = data.new_balance;
+                updateBalanceDisplay();
+                resultHTML += `<div>💎 Новый баланс: ${data.new_balance} монет</div>`;
+            }
+            
+            if (data.new_stars !== undefined) {
+                userBalance.stars = data.new_stars;
+                updateBalanceDisplay();
+                resultHTML += `<div>⭐ Звезды: ${data.new_stars}</div>`;
+            }
+            
+            // Дополнительная информация для разных игр
+            if (data.game === 'slots') {
+                resultHTML += `<div>🎰 Результат: ${data.result}</div>`;
+            } else if (data.game === 'number') {
+                resultHTML += `<div>🔢 Ваша ставка: ${data.guess}</div>`;
+                resultHTML += `<div>🎯 Загаданное число: ${data.number}</div>`;
+            } else if (data.game === 'dice') {
+                resultHTML += `<div>🎲 Результат: ${data.dice1} + ${data.dice2} = ${data.total}</div>`;
+                resultHTML += `<div>🎯 Ваша ставка: ${data.guess}</div>`;
+            } else if (data.game === 'poker') {
+                resultHTML += `<div>🎴 Ваша рука: ${data.player_hand.join(', ')}</div>`;
+                resultHTML += `<div>🤖 Рука бота: ${data.bot_hand.join(', ')}</div>`;
+            }
+            
+            resultHTML += '</div>';
+            resultsDiv.innerHTML = resultHTML;
+            
+            // Автоматически скрываем через 10 секунд
+            setTimeout(() => {
+                resultsDiv.style.display = 'none';
+            }, 10000);
+        }
+
+        function handleRegistrationResponse(data) {
+            if (data.step === 'email_sent') {
+                showStatus(data.message, 'info');
+            } else if (data.step === 'completed') {
+                isRegistered = true;
+                localStorage.setItem('cryptowin_registered', 'true');
+                userBalance.coins = data.balance || 300;
+                userBalance.stars = data.stars || 0;
+                localStorage.setItem('cryptowin_coins', userBalance.coins.toString());
+                localStorage.setItem('cryptowin_stars', userBalance.stars.toString());
+                showMainInterface();
+                updateBalanceDisplay();
+                showStatus(data.message, 'success');
+            } else {
+                showStatus(data.message, data.success ? 'success' : 'error');
+            }
+        }
+
+        function handlePhoneResponse(data) {
+            if (data.success) {
+                userBalance.coins = data.new_balance;
+                updateBalanceDisplay();
+                localStorage.setItem('cryptowin_coins', userBalance.coins.toString());
+            }
+            showStatus(data.message, data.success ? 'success' : 'error');
+        }
+
+        function handleConvertResponse(data) {
+            if (data.success) {
+                userBalance.coins = data.new_balance;
+                userBalance.stars = data.new_stars;
+                updateBalanceDisplay();
+                localStorage.setItem('cryptowin_coins', userBalance.coins.toString());
+                localStorage.setItem('cryptowin_stars', userBalance.stars.toString());
+            }
+            showStatus(data.message, data.success ? 'success' : 'error');
         }
 
         function checkRegistration() {
@@ -556,7 +692,6 @@
             });
 
             document.getElementById('verification-section').style.display = 'block';
-            showStatus('📧 Код отправлен в Telegram! Проверьте чат с ботом', 'info');
         }
 
         function addPhone() {
@@ -570,8 +705,6 @@
                 action: 'add_phone',
                 phone: phone
             });
-
-            showStatus('📱 Запрос на добавление телефона отправлен', 'info');
         }
 
         function verify2FA() {
@@ -585,17 +718,6 @@
                 action: 'verify_2fa',
                 code: code
             });
-
-            // В реальности здесь должен быть ответ от бота
-            isRegistered = true;
-            localStorage.setItem('cryptowin_registered', 'true');
-            localStorage.setItem('cryptowin_coins', '300');
-            localStorage.setItem('cryptowin_stars', '0');
-            showMainInterface();
-            userBalance.coins = 300;
-            userBalance.stars = 0;
-            updateBalanceDisplay();
-            showStatus('🎉 Регистрация завершена!', 'success');
         }
 
         function updateBalanceDisplay() {
@@ -658,7 +780,6 @@
                     const randomSymbol = symbols[Math.floor(Math.random() * symbols.length)];
                     slot.textContent = randomSymbol;
                 });
-                showStatus('✅ Игра отправлена! Результат в чате.', 'success');
             }, 2000);
         }
 
@@ -684,7 +805,6 @@
             userBalance.coins -= 20;
             updateBalanceDisplay();
             document.getElementById('number-guess').value = '';
-            showStatus('✅ Ставка принята! Результат в чате.', 'success');
         }
 
         function playDice() {
@@ -709,7 +829,6 @@
             userBalance.coins -= 15;
             updateBalanceDisplay();
             document.getElementById('dice-guess').value = '';
-            showStatus('✅ Кости брошены! Результат в чате.', 'success');
         }
 
         function playPoker() {
@@ -726,7 +845,6 @@
 
             userBalance.coins -= 50;
             updateBalanceDisplay();
-            showStatus('✅ Покер запущен! Результат в чате.', 'success');
         }
 
         function buyPremium(package) {
@@ -734,7 +852,6 @@
                 action: 'buy_premium',
                 package: package
             });
-            showStatus('👑 Запрос на покупку Premium отправлен в чат', 'info');
         }
 
         function buyStars(package) {
@@ -742,7 +859,6 @@
                 action: 'buy_stars',
                 package: package
             });
-            showStatus('⭐ Запрос на покупку звезд отправлен в чат', 'info');
         }
 
         function convertToStars() {
@@ -752,7 +868,6 @@
             }
             
             sendToBot({action: 'convert_stars'});
-            showStatus('✅ Запрос на конвертацию отправлен', 'success');
         }
 
         function convertFromStars() {
@@ -762,7 +877,6 @@
             }
             
             sendToBot({action: 'convert_from_stars'});
-            showStatus('✅ Запрос на конвертацию отправлен', 'success');
         }
 
         function sendToBot(data) {
