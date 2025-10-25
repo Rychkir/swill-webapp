@@ -42,7 +42,6 @@
             background: linear-gradient(45deg, #FFD700, #FFA500);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            text-shadow: 0 2px 10px rgba(255,215,0,0.3);
         }
 
         .balance-container {
@@ -80,7 +79,6 @@
             color: #aaaaaa;
             margin-bottom: 5px;
             text-transform: uppercase;
-            letter-spacing: 1px;
         }
 
         .balance-value {
@@ -291,13 +289,36 @@
             display: block;
         }
 
+        .purchase-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 10px;
+        }
+
+        .purchase-item {
+            background: rgba(255,255,255,0.1);
+            padding: 15px;
+            border-radius: 10px;
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+
+        .purchase-title {
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .purchase-price {
+            color: #FFD700;
+            font-size: 18px;
+            margin-bottom: 10px;
+        }
+
         .footer {
             text-align: center;
             margin-top: 25px;
             padding: 15px;
             color: #888888;
             font-size: 12px;
-            border-top: 1px solid rgba(255,255,255,0.1);
         }
 
         @media (max-width: 480px) {
@@ -309,18 +330,9 @@
                 font-size: 24px;
             }
             
-            .balance-card {
-                padding: 15px;
-            }
-            
             .game-btn {
                 padding: 12px 8px;
                 font-size: 13px;
-            }
-            
-            .btn {
-                padding: 14px 16px;
-                font-size: 14px;
             }
         }
     </style>
@@ -351,12 +363,13 @@
             </div>
             
             <div id="verification-section" style="display: none;">
-                <input type="text" id="verification-code" class="input-field" placeholder="Введите код подтверждения">
-                <button class="btn" onclick="verify2FA()">✅ Подтвердить</button>
+                <div class="section-title">🔐 Подтверждение</div>
+                <input type="text" id="verification-code" class="input-field" placeholder="Введите код из Telegram">
+                <button class="btn" onclick="verify2FA()">✅ Подтвердить регистрацию</button>
             </div>
         </div>
 
-        <!-- Основной интерфейс (скрыт до регистрации) -->
+        <!-- Основной интерфейс -->
         <div id="main-interface" style="display: none;">
             <div class="balance-container">
                 <div class="balance-card coins">
@@ -425,29 +438,71 @@
                 </div>
             </div>
 
+            <!-- Покупки -->
             <div class="section">
-                <div class="section-title">💎 Дополнительно</div>
-                <button class="btn premium" onclick="showPremium()">👑 Premium подписка</button>
-                <button class="btn donate" onclick="showDonate()">⭐ Купить звезды</button>
-                <div style="margin-top: 15px;">
-                    <button class="btn secondary" onclick="convertToStars()">⭐ 500 монет → 1 звезда</button>
-                    <button class="btn secondary" onclick="convertFromStars()">✨ 1 звезда → 500 монет</button>
+                <div class="section-title">👑 Premium подписка</div>
+                <div class="purchase-grid">
+                    <div class="purchase-item">
+                        <div class="purchase-title">💎 1 месяц</div>
+                        <div class="purchase-price">500 рублей</div>
+                        <button class="btn premium" onclick="buyPremium('1_month')">Купить</button>
+                    </div>
+                    <div class="purchase-item">
+                        <div class="purchase-title">💎 3 месяца</div>
+                        <div class="purchase-price">1200 рублей</div>
+                        <button class="btn premium" onclick="buyPremium('3_months')">Купить</button>
+                    </div>
+                    <div class="purchase-item">
+                        <div class="purchase-title">💎 6 месяцев</div>
+                        <div class="purchase-price">2000 рублей</div>
+                        <button class="btn premium" onclick="buyPremium('6_months')">Купить</button>
+                    </div>
                 </div>
+            </div>
+
+            <div class="section">
+                <div class="section-title">⭐ Покупка звезд</div>
+                <div class="purchase-grid">
+                    <div class="purchase-item">
+                        <div class="purchase-title">⭐ 10 звезд</div>
+                        <div class="purchase-price">100 рублей</div>
+                        <button class="btn donate" onclick="buyStars('10_stars')">Купить</button>
+                    </div>
+                    <div class="purchase-item">
+                        <div class="purchase-title">⭐ 25 звезд</div>
+                        <div class="purchase-price">200 рублей</div>
+                        <button class="btn donate" onclick="buyStars('25_stars')">Купить</button>
+                    </div>
+                    <div class="purchase-item">
+                        <div class="purchase-title">⭐ 50 звезд</div>
+                        <div class="purchase-price">350 рублей</div>
+                        <button class="btn donate" onclick="buyStars('50_stars')">Купить</button>
+                    </div>
+                    <div class="purchase-item">
+                        <div class="purchase-title">⭐ 100 звезд</div>
+                        <div class="purchase-price">600 рублей</div>
+                        <button class="btn donate" onclick="buyStars('100_stars')">Купить</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section">
+                <div class="section-title">💎 Конвертация</div>
+                <button class="btn secondary" onclick="convertToStars()">⭐ 500 монет → 1 звезда</button>
+                <button class="btn secondary" onclick="convertFromStars()">✨ 1 звезда → 500 монет</button>
             </div>
         </div>
 
         <div id="status-message" class="status-message"></div>
 
         <div class="footer">
-            © 2024 CryptoWin Casino. Все права защищены.<br>
-            Возрастное ограничение: 18+
+            © 2024 CryptoWin Casino. Возрастное ограничение: 18+
         </div>
     </div>
 
     <script>
         let tg = window.Telegram.WebApp;
         tg.expand();
-        tg.enableClosingConfirmation();
         
         let userBalance = {
             coins: 0,
@@ -457,13 +512,10 @@
         let isRegistered = false;
 
         function initApp() {
-            // Проверяем регистрацию и загружаем баланс
             checkRegistration();
         }
 
         function checkRegistration() {
-            // В реальности здесь должен быть запрос к боту для проверки статуса
-            // Для демонстрации используем localStorage
             const registered = localStorage.getItem('cryptowin_registered');
             if (registered === 'true') {
                 isRegistered = true;
@@ -480,7 +532,6 @@
         }
 
         function switchTab(tabName) {
-            // Скрываем все табы
             document.querySelectorAll('.tab-content').forEach(tab => {
                 tab.classList.remove('active');
             });
@@ -488,7 +539,6 @@
                 tab.classList.remove('active');
             });
             
-            // Показываем выбранный таб
             document.getElementById(tabName).classList.add('active');
             event.target.classList.add('active');
         }
@@ -506,7 +556,7 @@
             });
 
             document.getElementById('verification-section').style.display = 'block';
-            showStatus('📧 Код подтверждения отправлен на email', 'info');
+            showStatus('📧 Код отправлен в Telegram! Проверьте чат с ботом', 'info');
         }
 
         function addPhone() {
@@ -537,7 +587,6 @@
             });
 
             // В реальности здесь должен быть ответ от бота
-            // Для демонстрации сразу регистрируем
             isRegistered = true;
             localStorage.setItem('cryptowin_registered', 'true');
             localStorage.setItem('cryptowin_coins', '300');
@@ -572,6 +621,10 @@
         }
 
         function showGameInterface(gameType) {
+            if (!isRegistered) {
+                showStatus('❌ Сначала завершите регистрацию', 'error');
+                return;
+            }
             hideAllGameInterfaces();
             document.getElementById(`${gameType}-interface`).style.display = 'block';
         }
@@ -593,6 +646,9 @@
                 type: 'slots',
                 bet: 10
             });
+
+            userBalance.coins -= 10;
+            updateBalanceDisplay();
 
             setTimeout(() => {
                 slots.forEach(slotId => {
@@ -625,6 +681,8 @@
                 bet: 20
             });
 
+            userBalance.coins -= 20;
+            updateBalanceDisplay();
             document.getElementById('number-guess').value = '';
             showStatus('✅ Ставка принята! Результат в чате.', 'success');
         }
@@ -648,6 +706,8 @@
                 bet: 15
             });
 
+            userBalance.coins -= 15;
+            updateBalanceDisplay();
             document.getElementById('dice-guess').value = '';
             showStatus('✅ Кости брошены! Результат в чате.', 'success');
         }
@@ -664,15 +724,25 @@
                 bet: 50
             });
 
+            userBalance.coins -= 50;
+            updateBalanceDisplay();
             showStatus('✅ Покер запущен! Результат в чате.', 'success');
         }
 
-        function showPremium() {
-            showStatus('👑 Информация о Premium подписке отправлена в чат', 'info');
+        function buyPremium(package) {
+            sendToBot({
+                action: 'buy_premium',
+                package: package
+            });
+            showStatus('👑 Запрос на покупку Premium отправлен в чат', 'info');
         }
 
-        function showDonate() {
-            showStatus('💎 Информация о покупке звезд отправлена в чат', 'info');
+        function buyStars(package) {
+            sendToBot({
+                action: 'buy_stars',
+                package: package
+            });
+            showStatus('⭐ Запрос на покупку звезд отправлен в чат', 'info');
         }
 
         function convertToStars() {
