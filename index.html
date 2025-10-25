@@ -77,6 +77,11 @@
             border-color: rgba(255,105,180,0.3);
         }
 
+        .balance-icon {
+            font-size: 24px;
+            margin-bottom: 8px;
+        }
+
         .balance-label {
             font-size: 12px;
             color: #aaaaaa;
@@ -168,6 +173,22 @@
             box-shadow: 0 6px 20px rgba(255,215,0,0.4);
         }
 
+        .btn.premium {
+            background: linear-gradient(135deg, #9b59b6, #8e44ad);
+            color: white;
+        }
+
+        .btn.donate {
+            background: linear-gradient(135deg, #e74c3c, #c0392b);
+            color: white;
+        }
+
+        .btn.secondary {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
         .input-field {
             width: 100%;
             padding: 14px;
@@ -177,6 +198,10 @@
             background: rgba(255,255,255,0.1);
             color: white;
             font-size: 16px;
+        }
+
+        .input-field::placeholder {
+            color: #aaaaaa;
         }
 
         .slots-container {
@@ -207,6 +232,41 @@
             animation: spin 0.1s infinite;
         }
 
+        .registration-section {
+            background: linear-gradient(135deg, rgba(255,215,0,0.2), rgba(255,165,0,0.15));
+            border: 2px solid rgba(255,215,0,0.4);
+        }
+
+        .tab-container {
+            display: flex;
+            margin-bottom: 15px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 10px;
+            padding: 5px;
+        }
+
+        .tab {
+            flex: 1;
+            padding: 10px;
+            text-align: center;
+            cursor: pointer;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .tab.active {
+            background: rgba(255,215,0,0.3);
+            color: #FFD700;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
         .terms-container {
             max-height: 400px;
             overflow-y: auto;
@@ -216,6 +276,84 @@
             margin: 15px 0;
             font-size: 12px;
             line-height: 1.4;
+        }
+
+        .terms-section {
+            margin-bottom: 20px;
+        }
+
+        .terms-section h3 {
+            color: #FFD700;
+            margin-bottom: 10px;
+            border-bottom: 1px solid rgba(255,215,0,0.3);
+            padding-bottom: 5px;
+        }
+
+        .terms-section h4 {
+            color: #FFA500;
+            margin: 10px 0 5px 0;
+        }
+
+        .terms-section ul {
+            margin: 10px 0;
+            padding-left: 20px;
+        }
+
+        .terms-section li {
+            margin-bottom: 5px;
+        }
+
+        .warning-text {
+            color: #ff6b6b;
+            font-weight: bold;
+            background: rgba(255,107,107,0.1);
+            padding: 10px;
+            border-radius: 5px;
+            border-left: 4px solid #ff6b6b;
+            margin: 10px 0;
+        }
+
+        .purchase-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 10px;
+        }
+
+        .purchase-item {
+            background: rgba(255,255,255,0.1);
+            padding: 15px;
+            border-radius: 10px;
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+
+        .purchase-title {
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .purchase-price {
+            color: #FFD700;
+            font-size: 18px;
+            margin-bottom: 10px;
+        }
+
+        .game-result {
+            background: rgba(255,255,255,0.1);
+            padding: 15px;
+            border-radius: 10px;
+            margin: 15px 0;
+            border-left: 4px solid #FFD700;
+        }
+
+        .result-title {
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: #FFD700;
+        }
+
+        .result-details {
+            font-size: 14px;
+            margin-bottom: 10px;
         }
 
         .status-message {
@@ -238,12 +376,33 @@
             color: #e74c3c;
         }
 
+        .status-info {
+            background: rgba(52, 152, 219, 0.2);
+            border: 1px solid rgba(52, 152, 219, 0.4);
+            color: #3498db;
+        }
+
         .footer {
             text-align: center;
             margin-top: 25px;
             padding: 15px;
             color: #888888;
             font-size: 12px;
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                padding: 10px;
+            }
+            
+            .header h1 {
+                font-size: 24px;
+            }
+            
+            .game-btn {
+                padding: 12px 8px;
+                font-size: 13px;
+            }
         }
     </style>
 </head>
@@ -257,32 +416,83 @@
             </div>
 
             <div class="terms-container">
-                <h3>ЧАСТЬ 1/4: ОБЩИЕ ПОЛОЖЕНИЯ</h3>
-                <p>Настоящее Пользовательское Соглашение регулирует отношения между владельцем CryptoWin Premium Casino и пользователем данного сервиса...</p>
-                
-                <h4>⚠️ ВАЖНОЕ ПРЕДУПРЕЖДЕНИЕ О КОНФИДЕНЦИАЛЬНОСТИ</h4>
-                <p>ПОЛЬЗОВАТЕЛЬ СОГЛАШАЕТСЯ С ТЕМ, ЧТО:</p>
-                <ul>
-                    <li>ВСЕ ПЕРСОНАЛЬНЫЕ ДАННЫЕ МОГУТ БЫТЬ ПЕРЕДАНЫ ТРЕТЬИМ ЛИЦАМ</li>
-                    <li>АДМИНИСТРАЦИЯ НЕ НЕСЕТ ОТВЕТСТВЕННОСТИ ЗА УТЕЧКУ ДАННЫХ</li>
-                    <li>ДАННЫЕ МОГУТ ИСПОЛЬЗОВАТЬСЯ В КОММЕРЧЕСКИХ ЦЕЛЯХ</li>
-                </ul>
+                <div class="terms-section">
+                    <h3>ЧАСТЬ 1/4: ОБЩИЕ ПОЛОЖЕНИЯ</h3>
+                    
+                    <h4>1.1. ПРЕДМЕТ СОГЛАШЕНИЯ</h4>
+                    <p>Настоящее Пользовательское Соглашение (Далее - "Соглашение") регулирует отношения между владельцем CryptoWin Premium Casino (далее - "Сервис" или "Администрация") и пользователем (далее - "Пользователь") данного сервиса. Сервис предоставляет Пользователю доступ к играм азартного характера, включая но не ограничиваясь: игровые автоматы, карточные игры, игры на удачу. Сервис является исключительно развлекательной платформой и не является азартной игрой на деньги в понимании законодательства большинства стран.</p>
+                    
+                    <h4>1.2. СТАТУС ВИРТУАЛЬНОЙ ВАЛЮТЫ</h4>
+                    <p>Монеты и звезды, используемые в Сервисе, являются виртуальной игровой валютой и не имеют реальной денежной стоимости. Обмен виртуальной валюты на реальные денежные средства не предусмотрен и строго запрещен. Все внутриигровые покупки являются окончательными и не подлежат возврату.</p>
+                    
+                    <h4>1.3. ВОЗРАСТНЫЕ ОГРАНИЧЕНИЯ</h4>
+                    <p>Используя Сервис, Пользователь подтверждает, что достиг возраста 18 лет. Администрация не несет ответственности за недостоверность информации о возрасте, предоставленной Пользователем.</p>
+                </div>
 
-                <h3>ЧАСТЬ 2/4: СБОР ДАННЫХ</h3>
-                <p>Регистрируясь в Сервисе, Пользователь соглашается на сбор, обработку, хранение и использование персональных данных...</p>
+                <div class="terms-section">
+                    <h3>ЧАСТЬ 2/4: КОНФИДЕНЦИАЛЬНОСТЬ И ДАННЫЕ</h3>
+                    
+                    <h4>2.1. СБОР ДАННЫХ</h4>
+                    <p>Регистрируясь в Сервисе, Пользователь безоговорочно соглашается на сбор, обработку, хранение и использование следующих персональных данных: имя, контактные данные (email, телефон), данные о игровой активности, финансовые операции внутри Сервиса, технические данные устройства, IP-адрес, cookies, история посещений, предпочтения и поведенческие паттерны.</p>
+                    
+                    <div class="warning-text">
+                        <h4>⚠️ ВАЖНОЕ ПРЕДУПРЕЖДЕНИЕ О КОНФИДЕНЦИАЛЬНОСТИ</h4>
+                        <p>ПОЛЬЗОВАТЕЛЬ ЧЕТКО И ЯСНО ПОНИМАЕТ И СОГЛАШАЕТСЯ С ТЕМ, ЧТО:</p>
+                        <ul>
+                            <li>ВСЕ ПЕРСОНАЛЬНЫЕ ДАННЫЕ МОГУТ БЫТЬ ПЕРЕДАНЫ ТРЕТЬИМ ЛИЦАМ ДЛЯ ОБРАБОТКИ, АНАЛИЗА И КОММЕРЧЕСКОГО ИСПОЛЬЗОВАНИЯ</li>
+                            <li>АДМИНИСТРАЦИЯ НЕ НЕСЕТ ОТВЕТСТВЕННОСТИ ЗА УТЕЧКУ, ПОТЕРЮ ИЛИ НЕСАНКЦИОНИРОВАННОЕ РАСПРОСТРАНЕНИЕ ПЕРСОНАЛЬНЫХ ДАННЫХ ПОЛЬЗОВАТЕЛЕЙ</li>
+                            <li>ДАННЫЕ МОГУТ ХРАНИТЬСЯ НА СЕРВЕРАХ В РАЗНЫХ ЮРИСДИКЦИЯХ С РАЗЛИЧНЫМ УРОВНЕМ ЗАЩИТЫ ДАННЫХ</li>
+                            <li>НИКАКИЕ МЕРЫ БЕЗОПАСНОСТИ НЕ ГАРАНТИРУЮТ ПОЛНУЮ КОНФИДЕНЦИАЛЬНОСТЬ ПЕРЕДАВАЕМОЙ ИНФОРМАЦИИ</li>
+                            <li>ДАННЫЕ МОГУТ ИСПОЛЬЗОВАТЬСЯ ДЛЯ ЦЕЛЕЙ МАРКЕТИНГА, РЕКЛАМЫ И ПРОДАЖИ ТРЕТЬИМ СТОРОНАМ</li>
+                        </ul>
+                    </div>
+                    
+                    <h4>2.2. ИСПОЛЬЗОВАНИЕ ДАННЫХ</h4>
+                    <p>Пользователь соглашается с тем, что его данные могут использоваться для: маркетинговых рассылок, таргетированной рекламы, анализа поведения пользователей, передачи партнерам и рекламодателям, улучшения качества сервиса, предотвращения мошенничества, проведения статистических исследований и любых других законных целей по усмотрению Администрации.</p>
+                </div>
 
-                <h3>ЧАСТЬ 3/4: ФИНАНСОВЫЕ УСЛОВИЯ</h3>
-                <p>Все покупки внутри приложения являются окончательными и не подлежат возврату...</p>
+                <div class="terms-section">
+                    <h3>ЧАСТЬ 3/4: ФИНАНСОВЫЕ УСЛОВИЯ</h3>
+                    
+                    <h4>3.1. ПОКУПКИ В ПРИЛОЖЕНИИ</h4>
+                    <p>Все покупки внутри приложения являются окончательными и не подлежат возврату. Premium подписки и виртуальные товары не подлежат обмену на реальные денежные средства. Администрация оставляет за собой право изменять цены, условия покупок и доступность услуг в любое время без предварительного уведомления.</p>
+                    
+                    <h4>3.2. ОТВЕТСТВЕННОСТЬ</h4>
+                    <p>Пользователь самостоятельно несет ответственность за все финансовые операции, совершенные в Сервисе. Администрация не несет ответственности за ошибочные платежи или несанкционированный доступ к аккаунту. В случае утери доступа к аккаунту восстановление баланса и прогресса не гарантируется.</p>
+                    
+                    <h4>3.3. НАЛОГИ</h4>
+                    <p>Пользователь самостоятельно несет ответственность за уплату всех налогов и сборов, связанных с выигрышами и деятельностью в Сервисе, в соответствии с законодательством своей страны проживания.</p>
+                </div>
 
-                <h3>ЧАСТЬ 4/4: ЗАКЛЮЧИТЕЛЬНЫЕ ПОЛОЖЕНИЯ</h3>
-                <p>СЕРВИС ПРЕДОСТАВЛЯЕТСЯ "КАК ЕСТЬ". АДМИНИСТРАЦИЯ НЕ ГАРАНТИРУЕТ БЕСПЕРЕБОЙНУЮ РАБОТУ...</p>
+                <div class="terms-section">
+                    <h3>ЧАСТЬ 4/4: ЗАКЛЮЧИТЕЛЬНЫЕ ПОЛОЖЕНИЯ</h3>
+                    
+                    <h4>4.1. ОГРАНИЧЕНИЕ ОТВЕТСТВЕННОСТИ</h4>
+                    <p>СЕРВИС ПРЕДОСТАВЛЯЕТСЯ "КАК ЕСТЬ". АДМИНИСТРАЦИЯ НЕ ГАРАНТИРУЕТ БЕСПЕРЕБОЙНУЮ РАБОТУ СЕРВИСА, ОТСУТСТВИЕ ОШИБОК ИЛИ СООТВЕТСТВИЕ ОЖИДАНИЯМ ПОЛЬЗОВАТЕЛЯ. АДМИНИСТРАЦИЯ НЕ НЕСЕТ ОТВЕТСТВЕННОСТИ ЗА ЛЮБЫЕ ПРЯМЫЕ, КОСВЕННЫЕ, СЛУЧАЙНЫЕ ИЛИ ПОСЛЕДУЮЩИЕ УБЫТКИ, ВКЛЮЧАЯ УПУЩЕННУЮ ВЫГОДУ, ПОТЕРЮ ДАННЫХ ИЛИ ИНЫЕ НЕМАТЕРИАЛЬНЫЕ ПОТЕРИ.</p>
+                    
+                    <h4>4.2. ИЗМЕНЕНИЕ УСЛОВИЙ</h4>
+                    <p>Администрация оставляет за собой право в одностороннем порядке изменять условия настоящего Соглашения без предварительного уведомления Пользователя. Продолжение использования Сервиса после внесения изменений означает безоговорочное согласие с новыми условиями.</p>
+                    
+                    <h4>4.3. ПРИМЕНИМОЕ ПРАВО</h4>
+                    <p>Все споры и разногласия регулируются в соответствии с законодательством юрисдикции, выбранной Администрацией. Пользователь соглашается с исключительной подсудностью судов указанной юрисдикции.</p>
+                    
+                    <h4>4.4. ФОРС-МАЖОР</h4>
+                    <p>Администрация не несет ответственности за невыполнение обязательств, вызванное обстоятельствами непреодолимой силы, включая действия органов власти, стихийные бедствия, военные действия, террористические акты, сбои в работе интернета и иные обстоятельства вне разумного контроля.</p>
+                </div>
 
-                <p style="color: #FFD700; font-weight: bold; margin-top: 20px;">
-                    НАЖИМАЯ КНОПКУ "ПРИНИМАЮ", ВЫ ПОДТВЕРЖДАЕТЕ, ЧТО ПРОЧЛИ И ПОЛНОСТЬЮ ПОНИМАЕТЕ ВСЕ УСЛОВИЯ.
-                </p>
+                <div class="warning-text">
+                    <p><strong>НАЖИМАЯ КНОПКУ "ПРИНИМАЮ", ВЫ ПОДТВЕРЖДАЕТЕ, ЧТО:</strong></p>
+                    <ul>
+                        <li>Вам исполнилось 18 лет</li>
+                        <li>Вы полностью прочитали и понимаете все условия данного Соглашения</li>
+                        <li>Вы соглашаетесь на сбор, обработку и передачу ваших персональных данных третьим лицам</li>
+                        <li>Вы принимаете все риски, связанные с использованием Сервиса</li>
+                        <li>Вы отказываетесь от любых претензий к Администрации в отношении утери или раскрытия ваших данных</li>
+                    </ul>
+                </div>
             </div>
 
-            <button class="btn" onclick="acceptTerms()">✅ ПРИНИМАЮ ВСЕ УСЛОВИЯ</button>
+            <button class="btn" onclick="acceptTerms()">✅ Я ПРОЧЕЛ И ПРИНИМАЮ ВСЕ УСЛОВИЯ</button>
         </div>
 
         <!-- Экран регистрации -->
@@ -292,22 +502,28 @@
                 <p>Создайте аккаунт для доступа к играм</p>
             </div>
 
-            <div class="section">
-                <div class="section-title">📧 Регистрация по Email</div>
-                <input type="email" id="email-input" class="input-field" placeholder="Введите ваш email">
-                <button class="btn" onclick="registerEmail()">📧 Зарегистрироваться</button>
-            </div>
-
-            <div class="section">
-                <div class="section-title">📱 Добавить телефон (+100 монет)</div>
-                <input type="tel" id="phone-input" class="input-field" placeholder="+7XXX... +380XXX... +375XXX...">
-                <button class="btn" onclick="addPhone()">📱 Добавить телефон</button>
-            </div>
-
-            <div id="verification-section" class="section" style="display: none;">
-                <div class="section-title">🔐 Подтверждение email</div>
-                <input type="text" id="verification-code" class="input-field" placeholder="Введите код из Telegram">
-                <button class="btn" onclick="verify2FA()">✅ Подтвердить регистрацию</button>
+            <div class="section registration-section">
+                <div class="section-title">📝 Регистрация</div>
+                <div class="tab-container">
+                    <div class="tab active" onclick="switchTab('email-tab')">📧 Email</div>
+                    <div class="tab" onclick="switchTab('phone-tab')">📱 Телефон</div>
+                </div>
+                
+                <div id="email-tab" class="tab-content active">
+                    <input type="email" id="email-input" class="input-field" placeholder="Введите ваш email">
+                    <button class="btn" onclick="registerEmail()">📧 Зарегистрироваться</button>
+                </div>
+                
+                <div id="phone-tab" class="tab-content">
+                    <input type="tel" id="phone-input" class="input-field" placeholder="+7XXX... +380XXX... +375XXX...">
+                    <button class="btn" onclick="addPhone()">📱 Добавить телефон (+100 монет)</button>
+                </div>
+                
+                <div id="verification-section" style="display: none;">
+                    <div class="section-title">🔐 Подтверждение</div>
+                    <input type="text" id="verification-code" class="input-field" placeholder="Введите код из Telegram">
+                    <button class="btn" onclick="verify2FA()">✅ Подтвердить регистрацию</button>
+                </div>
             </div>
         </div>
 
@@ -315,83 +531,131 @@
         <div id="main-screen" class="screen">
             <div class="header">
                 <h1>🎰 CryptoWin Premium</h1>
-                <p>Баланс: <span id="coins-display">0</span> 🪙 | <span id="stars-display">0</span> ⭐</p>
+                <p>Элитный игровой опыт в Telegram</p>
             </div>
 
             <div class="balance-container">
                 <div class="balance-card coins">
+                    <div class="balance-icon">💰</div>
                     <div class="balance-label">Монеты</div>
-                    <div class="balance-value" id="coins-value">0</div>
+                    <div class="balance-value" id="coins-balance">0</div>
                 </div>
                 <div class="balance-card stars">
+                    <div class="balance-icon">⭐</div>
                     <div class="balance-label">Звезды</div>
-                    <div class="balance-value" id="stars-value">0</div>
+                    <div class="balance-value" id="stars-balance">0</div>
                 </div>
             </div>
 
+            <!-- Результаты игр -->
+            <div id="game-results" style="display: none;"></div>
+
             <div class="section">
-                <div class="section-title">🎮 ИГРОВОЙ ЗАЛ</div>
+                <div class="section-title">🎮 Игровой зал</div>
                 <div class="games-grid">
-                    <button class="game-btn slots" onclick="showGame('slots')">🎰 Слоты<br><small>10 монет</small></button>
-                    <button class="game-btn number" onclick="showGame('number')">🔢 Угадай число<br><small>20 монет</small></button>
-                    <button class="game-btn dice" onclick="showGame('dice')">🎲 Кости<br><small>15 монет</small></button>
-                    <button class="game-btn poker" onclick="showGame('poker')">🎴 Покер<br><small>50 монет</small></button>
+                    <button class="game-btn slots" onclick="showGameInterface('slots')">
+                        🎰 Автоматы<br><small>10 монет</small>
+                    </button>
+                    <button class="game-btn number" onclick="showGameInterface('number')">
+                        🔢 Угадай число<br><small>20 монет</small>
+                    </button>
+                    <button class="game-btn dice" onclick="showGameInterface('dice')">
+                        🎲 Кости<br><small>15 монет</small>
+                    </button>
+                    <button class="game-btn poker" onclick="showGameInterface('poker')">
+                        🎴 Покер<br><small>50 монет</small>
+                    </button>
                 </div>
             </div>
-        </div>
 
-        <!-- Экран слотов -->
-        <div id="slots-screen" class="screen">
-            <div class="header">
-                <h1>🎰 ИГРОВЫЕ АВТОМАТЫ</h1>
-                <button class="btn" onclick="showScreen('main-screen')">← Назад</button>
-            </div>
-
-            <div class="section">
-                <div class="slots-container">
-                    <div class="slot" id="slot1">🎁</div>
-                    <div class="slot" id="slot2">💎</div>
-                    <div class="slot" id="slot3">💰</div>
+            <!-- Интерфейсы игр -->
+            <div id="slots-interface" class="game-interface">
+                <div class="section">
+                    <div class="section-title">🎰 Игровые автоматы</div>
+                    <div class="slots-container">
+                        <div class="slot" id="slot1">🎁</div>
+                        <div class="slot" id="slot2">💎</div>
+                        <div class="slot" id="slot3">💰</div>
+                    </div>
+                    <button class="btn" onclick="playSlots()">🎰 Крутить за 10 монет</button>
                 </div>
-                <button class="btn" onclick="playSlots()">🎰 Крутить за 10 монет</button>
             </div>
-        </div>
 
-        <!-- Экран угадай число -->
-        <div id="number-screen" class="screen">
-            <div class="header">
-                <h1>🔢 УГАДАЙ ЧИСЛО</h1>
-                <button class="btn" onclick="showScreen('main-screen')">← Назад</button>
+            <div id="number-interface" class="game-interface">
+                <div class="section">
+                    <div class="section-title">🔢 Угадай число</div>
+                    <input type="number" id="number-guess" class="input-field" placeholder="Число от 1000 до 9999">
+                    <button class="btn" onclick="playNumber()">🎯 Сделать ставку (20 монет)</button>
+                </div>
+            </div>
+
+            <div id="dice-interface" class="game-interface">
+                <div class="section">
+                    <div class="section-title">🎲 Кости удачи</div>
+                    <input type="number" id="dice-guess" class="input-field" placeholder="Сумма от 2 до 12">
+                    <button class="btn" onclick="playDice()">🎲 Бросить кости (15 монет)</button>
+                </div>
+            </div>
+
+            <div id="poker-interface" class="game-interface">
+                <div class="section">
+                    <div class="section-title">🎴 Покер</div>
+                    <button class="btn" onclick="playPoker()">🎴 Играть в покер (50 монет)</button>
+                </div>
+            </div>
+
+            <!-- Покупки -->
+            <div class="section">
+                <div class="section-title">👑 Premium подписка</div>
+                <div class="purchase-grid">
+                    <div class="purchase-item">
+                        <div class="purchase-title">💎 1 месяц</div>
+                        <div class="purchase-price">500 рублей</div>
+                        <button class="btn premium" onclick="buyPremium('1_month')">Купить</button>
+                    </div>
+                    <div class="purchase-item">
+                        <div class="purchase-title">💎 3 месяца</div>
+                        <div class="purchase-price">1200 рублей</div>
+                        <button class="btn premium" onclick="buyPremium('3_months')">Купить</button>
+                    </div>
+                    <div class="purchase-item">
+                        <div class="purchase-title">💎 6 месяцев</div>
+                        <div class="purchase-price">2000 рублей</div>
+                        <button class="btn premium" onclick="buyPremium('6_months')">Купить</button>
+                    </div>
+                </div>
             </div>
 
             <div class="section">
-                <input type="number" id="number-guess" class="input-field" placeholder="Число от 1000 до 9999" min="1000" max="9999">
-                <button class="btn" onclick="playNumber()">🎯 Сделать ставку (20 монет)</button>
-            </div>
-        </div>
-
-        <!-- Экран кости -->
-        <div id="dice-screen" class="screen">
-            <div class="header">
-                <h1>🎲 КОСТИ УДАЧИ</h1>
-                <button class="btn" onclick="showScreen('main-screen')">← Назад</button>
+                <div class="section-title">⭐ Покупка звезд</div>
+                <div class="purchase-grid">
+                    <div class="purchase-item">
+                        <div class="purchase-title">⭐ 10 звезд</div>
+                        <div class="purchase-price">100 рублей</div>
+                        <button class="btn donate" onclick="buyStars('10_stars')">Купить</button>
+                    </div>
+                    <div class="purchase-item">
+                        <div class="purchase-title">⭐ 25 звезд</div>
+                        <div class="purchase-price">200 рублей</div>
+                        <button class="btn donate" onclick="buyStars('25_stars')">Купить</button>
+                    </div>
+                    <div class="purchase-item">
+                        <div class="purchase-title">⭐ 50 звезд</div>
+                        <div class="purchase-price">350 рублей</div>
+                        <button class="btn donate" onclick="buyStars('50_stars')">Купить</button>
+                    </div>
+                    <div class="purchase-item">
+                        <div class="purchase-title">⭐ 100 звезд</div>
+                        <div class="purchase-price">600 рублей</div>
+                        <button class="btn donate" onclick="buyStars('100_stars')">Купить</button>
+                    </div>
+                </div>
             </div>
 
             <div class="section">
-                <input type="number" id="dice-guess" class="input-field" placeholder="Сумма от 2 до 12" min="2" max="12">
-                <button class="btn" onclick="playDice()">🎲 Бросить кости (15 монет)</button>
-            </div>
-        </div>
-
-        <!-- Экран покера -->
-        <div id="poker-screen" class="screen">
-            <div class="header">
-                <h1>🎴 ПОКЕР</h1>
-                <button class="btn" onclick="showScreen('main-screen')">← Назад</button>
-            </div>
-
-            <div class="section">
-                <button class="btn" onclick="playPoker()">🎴 Играть в покер (50 монет)</button>
+                <div class="section-title">💎 Конвертация</div>
+                <button class="btn secondary" onclick="convertToStars()">⭐ 500 монет → 1 звезда</button>
+                <button class="btn secondary" onclick="convertFromStars()">✨ 1 звезда → 500 монет</button>
             </div>
         </div>
 
@@ -405,19 +669,147 @@
     <script>
         let tg = window.Telegram.WebApp;
         let userBalance = { coins: 0, stars: 0 };
-        
-        tg.expand();
-        tg.ready();
+        let isRegistered = false;
 
-        function showScreen(screenName) {
-            document.querySelectorAll('.screen').forEach(screen => {
-                screen.classList.remove('active');
+        function initApp() {
+            tg.onEvent('webAppDataReceived', (event) => {
+                try {
+                    const data = JSON.parse(event.data);
+                    handleBotResponse(data);
+                } catch (e) {
+                    console.error('Error parsing bot data:', e);
+                }
             });
-            document.getElementById(screenName + '-screen').classList.add('active');
+            
+            checkRegistration();
         }
 
-        function acceptTerms() {
-            showScreen('register');
+        function handleBotResponse(data) {
+            const action = data.action;
+            
+            if (action === 'game_result') {
+                showGameResult(data);
+            } else if (action === 'registration') {
+                handleRegistrationResponse(data);
+            } else if (action === 'phone') {
+                handlePhoneResponse(data);
+            } else if (action === 'convert') {
+                handleConvertResponse(data);
+            } else if (action === 'premium' || action === 'stars') {
+                showStatus(data.message, 'info');
+            }
+        }
+
+        function showGameResult(data) {
+            if (!data.success) {
+                showStatus(data.message, 'error');
+                return;
+            }
+
+            const resultsDiv = document.getElementById('game-results');
+            resultsDiv.style.display = 'block';
+            
+            let resultHTML = '<div class="game-result">';
+            resultHTML += `<div class="result-title">🎮 Результат игры</div>`;
+            resultHTML += `<div class="result-details">${data.message}</div>`;
+            
+            if (data.new_balance !== undefined) {
+                userBalance.coins = data.new_balance;
+                updateBalanceDisplay();
+                resultHTML += `<div>💎 Новый баланс: ${data.new_balance} монет</div>`;
+            }
+            
+            if (data.new_stars !== undefined) {
+                userBalance.stars = data.new_stars;
+                updateBalanceDisplay();
+                resultHTML += `<div>⭐ Звезды: ${data.new_stars}</div>`;
+            }
+            
+            if (data.game === 'slots') {
+                resultHTML += `<div>🎰 Результат: ${data.result}</div>`;
+            } else if (data.game === 'number') {
+                resultHTML += `<div>🔢 Ваша ставка: ${data.guess}</div>`;
+                resultHTML += `<div>🎯 Загаданное число: ${data.number}</div>`;
+            } else if (data.game === 'dice') {
+                resultHTML += `<div>🎲 Результат: ${data.dice1} + ${data.dice2} = ${data.total}</div>`;
+                resultHTML += `<div>🎯 Ваша ставка: ${data.guess}</div>`;
+            } else if (data.game === 'poker') {
+                resultHTML += `<div>🎴 Ваша рука: ${data.player_hand.join(', ')}</div>`;
+                resultHTML += `<div>🤖 Рука бота: ${data.bot_hand.join(', ')}</div>`;
+            }
+            
+            resultHTML += '</div>';
+            resultsDiv.innerHTML = resultHTML;
+            
+            setTimeout(() => {
+                resultsDiv.style.display = 'none';
+            }, 10000);
+        }
+
+        function handleRegistrationResponse(data) {
+            if (data.step === 'email_sent') {
+                showStatus(data.message, 'info');
+            } else if (data.step === 'completed') {
+                isRegistered = true;
+                localStorage.setItem('cryptowin_registered', 'true');
+                userBalance.coins = data.balance || 300;
+                userBalance.stars = data.stars || 0;
+                localStorage.setItem('cryptowin_coins', userBalance.coins.toString());
+                localStorage.setItem('cryptowin_stars', userBalance.stars.toString());
+                showMainInterface();
+                updateBalanceDisplay();
+                showStatus(data.message, 'success');
+            } else {
+                showStatus(data.message, data.success ? 'success' : 'error');
+            }
+        }
+
+        function handlePhoneResponse(data) {
+            if (data.success) {
+                userBalance.coins = data.new_balance;
+                updateBalanceDisplay();
+                localStorage.setItem('cryptowin_coins', userBalance.coins.toString());
+            }
+            showStatus(data.message, data.success ? 'success' : 'error');
+        }
+
+        function handleConvertResponse(data) {
+            if (data.success) {
+                userBalance.coins = data.new_balance;
+                userBalance.stars = data.new_stars;
+                updateBalanceDisplay();
+                localStorage.setItem('cryptowin_coins', userBalance.coins.toString());
+                localStorage.setItem('cryptowin_stars', userBalance.stars.toString());
+            }
+            showStatus(data.message, data.success ? 'success' : 'error');
+        }
+
+        function checkRegistration() {
+            const registered = localStorage.getItem('cryptowin_registered');
+            if (registered === 'true') {
+                isRegistered = true;
+                showMainInterface();
+                userBalance.coins = parseInt(localStorage.getItem('cryptowin_coins') || '300');
+                userBalance.stars = parseInt(localStorage.getItem('cryptowin_stars') || '0');
+                updateBalanceDisplay();
+            }
+        }
+
+        function showMainInterface() {
+            document.getElementById('registration-section').style.display = 'none';
+            document.getElementById('main-interface').style.display = 'block';
+        }
+
+        function switchTab(tabName) {
+            document.querySelectorAll('.tab-content').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            document.querySelectorAll('.tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            
+            document.getElementById(tabName).classList.add('active');
+            event.target.classList.add('active');
         }
 
         function registerEmail() {
@@ -433,7 +825,6 @@
             }));
 
             document.getElementById('verification-section').style.display = 'block';
-            showStatus('📧 Код отправлен в Telegram! Проверьте чат с ботом', 'success');
         }
 
         function addPhone() {
@@ -462,76 +853,182 @@
             }));
         }
 
-        function showGame(gameType) {
-            showScreen(gameType);
-        }
-
-        function playSlots() {
-            tg.sendData(JSON.stringify({
-                action: 'game',
-                type: 'slots',
-                bet: 10
-            }));
-        }
-
-        function playNumber() {
-            const guess = document.getElementById('number-guess').value;
-            tg.sendData(JSON.stringify({
-                action: 'game',
-                type: 'number',
-                guess: parseInt(guess),
-                bet: 20
-            }));
-        }
-
-        function playDice() {
-            const guess = document.getElementById('dice-guess').value;
-            tg.sendData(JSON.stringify({
-                action: 'game',
-                type: 'dice',
-                guess: parseInt(guess),
-                bet: 15
-            }));
-        }
-
-        function playPoker() {
-            tg.sendData(JSON.stringify({
-                action: 'game',
-                type: 'poker',
-                bet: 50
-            }));
+        function updateBalanceDisplay() {
+            document.getElementById('coins-balance').textContent = userBalance.coins;
+            document.getElementById('stars-balance').textContent = userBalance.stars;
         }
 
         function showStatus(message, type = 'info') {
             const statusEl = document.getElementById('status-message');
             statusEl.textContent = message;
             statusEl.className = `status-message status-${type}`;
-            setTimeout(() => statusEl.textContent = '', 5000);
+            statusEl.style.display = 'block';
+            
+            setTimeout(() => {
+                statusEl.style.display = 'none';
+            }, 5000);
         }
 
-        function updateBalanceDisplay() {
-            document.getElementById('coins-display').textContent = userBalance.coins;
-            document.getElementById('stars-display').textContent = userBalance.stars;
-            document.getElementById('coins-value').textContent = userBalance.coins;
-            document.getElementById('stars-value').textContent = userBalance.stars;
+        function hideAllGameInterfaces() {
+            document.querySelectorAll('.game-interface').forEach(el => {
+                el.style.display = 'none';
+            });
         }
 
-        tg.onEvent('webAppDataReceived', (event) => {
-            try {
-                const data = JSON.parse(event.data);
-                if (data.action === 'update_balance') {
-                    userBalance.coins = data.coins;
-                    userBalance.stars = data.stars;
-                    updateBalanceDisplay();
-                } else if (data.action === 'registration_complete') {
-                    showScreen('main-screen');
-                    showStatus('🎉 Регистрация завершена!', 'success');
-                }
-            } catch (e) {
-                console.error('Error:', e);
+        function showGameInterface(gameType) {
+            if (!isRegistered) {
+                showStatus('❌ Сначала завершите регистрацию', 'error');
+                return;
             }
-        });
+            hideAllGameInterfaces();
+            document.getElementById(`${gameType}-interface`).style.display = 'block';
+        }
 
+        function playSlots() {
+            if (userBalance.coins < 10) {
+                showStatus('❌ Недостаточно монет!', 'error');
+                return;
+            }
+
+            const slots = ['slot1', 'slot2', 'slot3'];
+            slots.forEach(slotId => {
+                const slot = document.getElementById(slotId);
+                slot.classList.add('spinning');
+            });
+
+            tg.sendData(JSON.stringify({
+                action: 'game',
+                type: 'slots',
+                bet: 10
+            }));
+
+            userBalance.coins -= 10;
+            updateBalanceDisplay();
+
+            setTimeout(() => {
+                slots.forEach(slotId => {
+                    const slot = document.getElementById(slotId);
+                    slot.classList.remove('spinning');
+                    const symbols = ['🎁', '💎', '💰', '👑', '⚡', '🌟', '🔥', '🍀'];
+                    const randomSymbol = symbols[Math.floor(Math.random() * symbols.length)];
+                    slot.textContent = randomSymbol;
+                });
+            }, 2000);
+        }
+
+        function playNumber() {
+            const guess = document.getElementById('number-guess').value;
+            if (!guess || guess < 1000 || guess > 9999) {
+                showStatus('❌ Введите число от 1000 до 9999', 'error');
+                return;
+            }
+
+            if (userBalance.coins < 20) {
+                showStatus('❌ Недостаточно монет!', 'error');
+                return;
+            }
+
+            tg.sendData(JSON.stringify({
+                action: 'game',
+                type: 'number',
+                guess: parseInt(guess),
+                bet: 20
+            }));
+
+            userBalance.coins -= 20;
+            updateBalanceDisplay();
+            document.getElementById('number-guess').value = '';
+        }
+
+        function playDice() {
+            const guess = document.getElementById('dice-guess').value;
+            if (!guess || guess < 2 || guess > 12) {
+                showStatus('❌ Введите сумму от 2 до 12', 'error');
+                return;
+            }
+
+            if (userBalance.coins < 15) {
+                showStatus('❌ Недостаточно монет!', 'error');
+                return;
+            }
+
+            tg.sendData(JSON.stringify({
+                action: 'game',
+                type: 'dice',
+                guess: parseInt(guess),
+                bet: 15
+            }));
+
+            userBalance.coins -= 15;
+            updateBalanceDisplay();
+            document.getElementById('dice-guess').value = '';
+        }
+
+        function playPoker() {
+            if (userBalance.coins < 50) {
+                showStatus('❌ Недостаточно монет!', 'error');
+                return;
+            }
+
+            tg.sendData(JSON.stringify({
+                action: 'game',
+                type: 'poker',
+                bet: 50
+            }));
+
+            userBalance.coins -= 50;
+            updateBalanceDisplay();
+        }
+
+        function buyPremium(package) {
+            tg.sendData(JSON.stringify({
+                action: 'buy_premium',
+                package: package
+            }));
+        }
+
+        function buyStars(package) {
+            tg.sendData(JSON.stringify({
+                action: 'buy_stars',
+                package: package
+            }));
+        }
+
+        function convertToStars() {
+            if (userBalance.coins < 500) {
+                showStatus('❌ Недостаточно монет для конвертации', 'error');
+                return;
+            }
+            
+            tg.sendData(JSON.stringify({action: 'convert_stars'}));
+        }
+
+        function convertFromStars() {
+            if (userBalance.stars < 1) {
+                showStatus('❌ Недостаточно звезд для конвертации', 'error');
+                return;
+            }
+            
+            tg.sendData(JSON.stringify({action: 'convert_from_stars'}));
+        }
+
+        function sendToBot(data) {
+            tg.sendData(JSON.stringify(data));
+        }
+
+        function acceptTerms() {
+            showScreen('register-screen');
+        }
+
+        function showScreen(screenName) {
+            document.querySelectorAll('.screen').forEach(screen => {
+                screen.classList.remove('active');
+            });
+            document.getElementById(screenName).classList.add('active');
+        }
+
+        document.addEventListener('DOMContentLoaded', initApp);
+        tg.ready();
         showScreen('terms-screen');
     </script>
 </body>
