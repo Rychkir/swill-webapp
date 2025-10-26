@@ -88,6 +88,10 @@
             box-shadow: 0 5px 15px rgba(255, 215, 0, 0.4);
         }
         
+        .btn-secondary {
+            background: linear-gradient(45deg, #6c757d, #495057);
+        }
+        
         .terms {
             background: rgba(255, 255, 255, 0.1);
             padding: 15px;
@@ -96,6 +100,8 @@
             font-size: 11px;
             line-height: 1.4;
             opacity: 0.8;
+            max-height: 200px;
+            overflow-y: auto;
         }
         
         .bonus-info {
@@ -134,6 +140,17 @@
             margin-bottom: 5px;
             color: #FFD700;
         }
+        
+        .checkbox-group {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        
+        .checkbox-group input {
+            width: auto;
+            margin-right: 10px;
+        }
     </style>
 </head>
 <body>
@@ -143,7 +160,7 @@
             <p>Премиум азартные игры</p>
         </div>
         
-        <!-- Шаг 1: Регистрация -->
+        <!-- Шаг 1: Соглашение -->
         <div id="step1" class="step active">
             <div class="bonus-info">
                 🎁 Стартовый бонус: 300 монет!
@@ -170,11 +187,22 @@
                     Ваши данные защищены шифрованием. Мы не передаем информацию третьим лицам.
                 </div>
                 
-                <div style="text-align: center; margin-top: 10px; font-size: 10px; opacity: 0.6;">
-                    Нажимая "Начать игру", вы принимаете все вышеуказанные условия
+                <div class="agreement-section">
+                    <div class="agreement-title">⚖️ Правовые аспекты</div>
+                    Играя, вы подтверждаете, что достигли совершеннолетия и играете ответственно.
                 </div>
             </div>
             
+            <div class="checkbox-group">
+                <input type="checkbox" id="agreeTerms">
+                <label for="agreeTerms">Я принимаю условия использования</label>
+            </div>
+            
+            <button class="btn" onclick="acceptTerms()">✅ Принять и продолжить</button>
+        </div>
+        
+        <!-- Шаг 2: Регистрация -->
+        <div id="step2" class="step">
             <div class="form-group">
                 <label for="email">📧 Ваш Email:</label>
                 <input type="email" id="email" placeholder="example@gmail.com">
@@ -185,18 +213,24 @@
                 <input type="text" id="referral" placeholder="Код друга">
             </div>
             
-            <button class="btn" onclick="startRegistration()">🚀 Начать игру</button>
+            <button class="btn" onclick="startRegistration()">🚀 Зарегистрироваться</button>
+            <button class="btn btn-secondary" onclick="showStep(1)">↩️ Назад к условиям</button>
         </div>
         
-        <!-- Шаг 2: Подтверждение кода -->
-        <div id="step2" class="step">
+        <!-- Шаг 3: Подтверждение кода -->
+        <div id="step3" class="step">
+            <div style="text-align: center; margin-bottom: 20px;">
+                <p>Код подтверждения отправлен на вашу почту</p>
+                <p id="userEmail" style="font-weight: bold; color: #FFD700;"></p>
+            </div>
+            
             <div class="form-group">
-                <label>🔐 Введите код из Telegram:</label>
+                <label>🔐 Введите код из email:</label>
                 <input type="text" id="code" class="code-input" placeholder="_ _ _ _ _ _" maxlength="6">
             </div>
             
             <button class="btn" onclick="verifyCode()">✅ Подтвердить</button>
-            <button class="btn" onclick="showStep(1)" style="background: #6c757d;">↩️ Назад</button>
+            <button class="btn btn-secondary" onclick="showStep(2)">↩️ Назад</button>
         </div>
     </div>
 
@@ -210,6 +244,20 @@
                 step.classList.remove('active');
             });
             document.getElementById('step' + stepNumber).classList.add('active');
+        }
+        
+        function acceptTerms() {
+            if (!document.getElementById('agreeTerms').checked) {
+                alert('❌ Пожалуйста, примите условия использования');
+                return;
+            }
+            
+            const data = {
+                action: 'accept_terms'
+            };
+            
+            tg.sendData(JSON.stringify(data));
+            showStep(2);
         }
         
         function startRegistration() {
@@ -228,7 +276,8 @@
             };
             
             tg.sendData(JSON.stringify(data));
-            showStep(2);
+            document.getElementById('userEmail').textContent = email;
+            showStep(3);
         }
         
         function verifyCode() {
