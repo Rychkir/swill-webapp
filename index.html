@@ -152,12 +152,13 @@
             margin-right: 10px;
         }
         
-        .email-confirm {
+        .success-message {
+            background: rgba(76, 175, 80, 0.2);
+            padding: 15px;
+            border-radius: 10px;
             text-align: center;
             margin-bottom: 20px;
-            padding: 10px;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 10px;
+            border: 1px solid rgba(76, 175, 80, 0.5);
         }
     </style>
 </head>
@@ -227,10 +228,9 @@
         
         <!-- Шаг 3: Подтверждение кода -->
         <div id="step3" class="step">
-            <div class="email-confirm">
-                <p>📧 Код подтверждения отправлен на:</p>
-                <p id="userEmail" style="font-weight: bold; color: #FFD700; font-size: 16px;"></p>
-                <p style="font-size: 12px; opacity: 0.8;">Проверьте папку "Входящие" и "Спам"</p>
+            <div style="text-align: center; margin-bottom: 20px;">
+                <p>Код подтверждения отправлен на вашу почту</p>
+                <p id="userEmail" style="font-weight: bold; color: #FFD700;"></p>
             </div>
             
             <div class="form-group">
@@ -240,6 +240,17 @@
             
             <button class="btn" onclick="verifyCode()">✅ Подтвердить</button>
             <button class="btn btn-secondary" onclick="showStep(2)">↩️ Назад</button>
+        </div>
+        
+        <!-- Шаг 4: Успешная регистрация -->
+        <div id="step4" class="step">
+            <div class="success-message">
+                <h2>🎉 Регистрация завершена!</h2>
+                <p>🎁 Вам начислено 300 монет</p>
+                <p>⭐ Начните играть прямо сейчас!</p>
+            </div>
+            
+            <button class="btn" onclick="openGames()">🎮 Начать играть</button>
         </div>
     </div>
 
@@ -305,8 +316,27 @@
             tg.sendData(JSON.stringify(data));
         }
         
+        function openGames() {
+            tg.sendData(JSON.stringify({action: 'open_games'}));
+        }
+        
         tg.MainButton.onClick(() => {
             tg.sendData(JSON.stringify({action: 'open_games'}));
+        });
+        
+        // Обработка ответов от бота
+        tg.onEvent('viewportChanged', function() {
+            const message = tg.initDataUnsafe?.start_param;
+            if (message) {
+                try {
+                    const data = JSON.parse(message);
+                    if (data.step === 'completed') {
+                        showStep(4);
+                    }
+                } catch (e) {
+                    // Не JSON сообщение
+                }
+            }
         });
         
         // Автофокус на код
