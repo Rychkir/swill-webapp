@@ -14,9 +14,10 @@
 
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #1a1f2e 0%, #2d3748 100%);
             min-height: 100vh;
             color: white;
+            line-height: 1.6;
         }
 
         .container {
@@ -27,54 +28,82 @@
 
         .header {
             text-align: center;
-            margin-bottom: 30px;
+            margin-bottom: 25px;
         }
 
         .logo {
-            font-size: 2.5em;
+            font-size: 3em;
             margin-bottom: 10px;
         }
 
+        .title {
+            font-size: 1.8em;
+            font-weight: bold;
+            margin-bottom: 5px;
+            color: #FFD700;
+        }
+
         .subtitle {
-            opacity: 0.9;
-            font-size: 1.1em;
+            opacity: 0.8;
+            font-size: 1em;
+            margin-bottom: 20px;
         }
 
         .screen {
             display: none;
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px);
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(15px);
             border-radius: 20px;
-            padding: 30px;
-            margin-bottom: 20px;
-            border: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 25px;
+            margin-bottom: 15px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
         }
 
         .active {
             display: block;
+            animation: fadeIn 0.5s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
         .btn {
             background: linear-gradient(45deg, #FFD700, #FFA500);
-            color: #333;
+            color: #1a1f2e;
             border: none;
-            padding: 15px 30px;
-            border-radius: 50px;
+            padding: 16px 30px;
+            border-radius: 12px;
             font-size: 16px;
-            font-weight: bold;
+            font-weight: 600;
             cursor: pointer;
             width: 100%;
-            margin: 10px 0;
-            transition: transform 0.2s;
+            margin: 12px 0;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
 
         .btn:hover {
             transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(255, 215, 0, 0.4);
+        }
+
+        .btn:active {
+            transform: translateY(0);
         }
 
         .btn-secondary {
-            background: rgba(255, 255, 255, 0.2);
+            background: rgba(255, 255, 255, 0.1);
             color: white;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.15);
+            box-shadow: 0 6px 20px rgba(255, 255, 255, 0.2);
         }
 
         .input-group {
@@ -83,103 +112,139 @@
 
         .input-group label {
             display: block;
-            margin-bottom: 8px;
-            font-weight: bold;
+            margin-bottom: 10px;
+            font-weight: 600;
+            color: #FFD700;
+            font-size: 14px;
         }
 
         .input-group input {
             width: 100%;
-            padding: 15px;
-            border: none;
-            border-radius: 10px;
-            background: rgba(255, 255, 255, 0.9);
+            padding: 16px;
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.08);
             font-size: 16px;
+            color: white;
+            transition: all 0.3s ease;
         }
 
-        .balance-card {
-            background: rgba(255, 255, 255, 0.15);
-            border-radius: 15px;
+        .input-group input:focus {
+            outline: none;
+            border-color: #FFD700;
+            background: rgba(255, 255, 255, 0.12);
+        }
+
+        .input-group input::placeholder {
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        .terms-content {
+            max-height: 300px;
+            overflow-y: auto;
+            margin-bottom: 25px;
             padding: 20px;
-            text-align: center;
-            margin-bottom: 20px;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            font-size: 14px;
+            line-height: 1.8;
         }
 
-        .balance-amount {
-            font-size: 2em;
-            font-weight: bold;
-            margin: 10px 0;
+        .terms-content h3 {
+            color: #FFD700;
+            margin-bottom: 15px;
+            font-size: 1.2em;
         }
 
-        .game-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 15px;
-            margin: 20px 0;
+        .terms-content ul {
+            padding-left: 20px;
+            margin-bottom: 15px;
         }
 
-        .game-btn {
-            background: rgba(255, 255, 255, 0.1);
-            border: 2px solid rgba(255, 255, 255, 0.3);
-            border-radius: 15px;
-            padding: 20px;
-            text-align: center;
-            cursor: pointer;
-            transition: all 0.3s;
+        .terms-content li {
+            margin-bottom: 8px;
         }
 
-        .game-btn:hover {
-            background: rgba(255, 255, 255, 0.2);
-            transform: scale(1.05);
-        }
-
-        .game-icon {
-            font-size: 2em;
-            margin-bottom: 10px;
-        }
-
-        .slots-result {
-            display: flex;
-            justify-content: space-around;
-            font-size: 3em;
-            margin: 20px 0;
-        }
-
-        .result-message {
-            text-align: center;
-            padding: 15px;
-            border-radius: 10px;
-            margin: 15px 0;
-            font-weight: bold;
-        }
-
-        .win {
-            background: rgba(76, 175, 80, 0.3);
-            border: 2px solid #4CAF50;
-        }
-
-        .lose {
-            background: rgba(244, 67, 54, 0.3);
-            border: 2px solid #F44336;
-        }
-
-        .loading {
-            text-align: center;
-            padding: 20px;
-        }
-
-        .hidden {
+        .debug-panel {
+            position: fixed;
+            bottom: 10px;
+            right: 10px;
+            width: 300px;
+            height: 150px;
+            background: rgba(0, 0, 0, 0.9);
+            border: 1px solid #333;
+            border-radius: 8px;
+            padding: 10px;
+            font-family: 'Courier New', monospace;
+            font-size: 10px;
+            color: #00ff00;
+            overflow-y: auto;
+            z-index: 1000;
             display: none;
         }
 
-        .debug-info {
-            background: rgba(0, 0, 0, 0.5);
-            padding: 10px;
+        .debug-toggle {
+            position: fixed;
+            bottom: 10px;
+            left: 10px;
+            background: #333;
+            color: white;
+            border: none;
+            padding: 5px 10px;
             border-radius: 5px;
-            font-family: monospace;
-            font-size: 12px;
-            margin-top: 10px;
-            max-height: 100px;
-            overflow-y: auto;
+            font-size: 10px;
+            cursor: pointer;
+            z-index: 1001;
+        }
+
+        .message {
+            padding: 15px;
+            border-radius: 10px;
+            margin: 15px 0;
+            text-align: center;
+            font-weight: 600;
+            border: 2px solid transparent;
+        }
+
+        .message.success {
+            background: rgba(76, 175, 80, 0.2);
+            border-color: #4CAF50;
+            color: #4CAF50;
+        }
+
+        .message.error {
+            background: rgba(244, 67, 54, 0.2);
+            border-color: #F44336;
+            color: #F44336;
+        }
+
+        .message.info {
+            background: rgba(33, 150, 243, 0.2);
+            border-color: #2196F3;
+            color: #2196F3;
+        }
+
+        .code-input {
+            text-align: center;
+            font-size: 24px;
+            font-weight: bold;
+            letter-spacing: 10px;
+        }
+
+        .resend-link {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .resend-link a {
+            color: #FFD700;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .resend-link a:hover {
+            text-decoration: underline;
         }
     </style>
 </head>
@@ -187,10 +252,10 @@
     <div class="container">
         <!-- Экран загрузки -->
         <div id="loadingScreen" class="screen active">
-            <div class="loading">
+            <div class="header">
                 <div class="logo">🎰</div>
-                <h2>CryptoWin Casino</h2>
-                <p>Загрузка...</p>
+                <div class="title">CryptoWin Casino</div>
+                <div class="subtitle">Загрузка...</div>
             </div>
         </div>
 
@@ -198,184 +263,129 @@
         <div id="termsScreen" class="screen">
             <div class="header">
                 <div class="logo">📋</div>
-                <h2>Условия использования</h2>
+                <div class="title">Условия использования</div>
             </div>
             
-            <div style="max-height: 300px; overflow-y: auto; margin-bottom: 20px; padding: 15px; background: rgba(0,0,0,0.3); border-radius: 10px;">
-                <p><strong>Правила CryptoWin Casino:</strong></p>
-                <p>1. Минимальный возраст: 18 лет</p>
-                <p>2. Играйте ответственно</p>
-                <p>3. Запрещено использование ботов</p>
-                <p>4. Администрация оставляет право за собой блокировку аккаунта за нарушения</p>
-                <p>5. Все решения администрации окончательны</p>
+            <div class="terms-content">
+                <h3>Правила и условия CryptoWin Casino</h3>
+                
+                <p><strong>1. Общие положения</strong></p>
+                <ul>
+                    <li>Минимальный возраст для использования сервиса: 18 лет</li>
+                    <li>Регистрируясь, вы подтверждаете свое совершеннолетие</li>
+                    <li>Администрация оставляет за собой право изменять правила</li>
+                </ul>
+
+                <p><strong>2. Регистрация и аккаунт</strong></p>
+                <ul>
+                    <li>Один пользователь - один аккаунт</li>
+                    <li>Запрещено создание множественных аккаунтов</li>
+                    <li>Вы несете ответственность за безопасность своего аккаунта</li>
+                </ul>
+
+                <p><strong>3. Игровой процесс</strong></p>
+                <ul>
+                    <li>Все игры основаны на генераторе случайных чисел</li>
+                    <li>Запрещено использование ботов и автоматических скриптов</li>
+                    <li>Решения администрации по спорным ситуациям окончательны</li>
+                </ul>
+
+                <p><strong>4. Ответственная игра</strong></p>
+                <ul>
+                    <li>Играйте ответственно и в пределах своих средств</li>
+                    <li>Помните, что азартные игры могут вызывать зависимость</li>
+                    <li>При возникновении проблем обращайтесь в поддержку</li>
+                </ul>
+
+                <p><strong>5. Конфиденциальность</strong></p>
+                <ul>
+                    <li>Мы защищаем ваши персональные данные</li>
+                    <li>Информация не передается третьим лицам</li>
+                    <li>Используется шифрование данных</li>
+                </ul>
             </div>
 
-            <button class="btn" onclick="acceptTerms()">✅ Я принимаю условия</button>
+            <button class="btn" onclick="acceptTerms()">
+                ✅ Я ПРОЧИТАЛ И ПРИНИМАЮ УСЛОВИЯ
+            </button>
         </div>
 
         <!-- Экран регистрации -->
         <div id="registerScreen" class="screen">
             <div class="header">
                 <div class="logo">📧</div>
-                <h2>Регистрация</h2>
-                <p class="subtitle">Введите ваш email для получения кода подтверждения</p>
+                <div class="title">Регистрация</div>
+                <div class="subtitle">Введите email для получения кода подтверждения</div>
             </div>
 
             <div class="input-group">
-                <label for="email">Email:</label>
-                <input type="email" id="email" placeholder="your@email.com" required>
+                <label for="email">EMAIL АДРЕС</label>
+                <input type="email" id="email" placeholder="your.email@example.com" required>
             </div>
 
             <div class="input-group">
-                <label for="referralCode">Реферальный код (необязательно):</label>
-                <input type="text" id="referralCode" placeholder="ABC12345">
+                <label for="referralCode">РЕФЕРАЛЬНЫЙ КОД (НЕОБЯЗАТЕЛЬНО)</label>
+                <input type="text" id="referralCode" placeholder="ABCD1234">
             </div>
 
-            <button class="btn" onclick="registerEmail()">📧 Получить код подтверждения</button>
+            <button class="btn" onclick="registerEmail()">
+                📧 ПОЛУЧИТЬ КОД ПОДТВЕРЖДЕНИЯ
+            </button>
+
+            <div id="registerMessage" class="message"></div>
         </div>
 
         <!-- Экран подтверждения кода -->
         <div id="verifyScreen" class="screen">
             <div class="header">
                 <div class="logo">🔐</div>
-                <h2>Подтверждение email</h2>
-                <p class="subtitle">Введите код из письма</p>
+                <div class="title">Подтверждение Email</div>
+                <div class="subtitle">Введите 6-значный код из письма</div>
             </div>
 
             <div class="input-group">
-                <label for="verificationCode">Код подтверждения:</label>
-                <input type="text" id="verificationCode" placeholder="123456" maxlength="6">
+                <label for="verificationCode">КОД ПОДТВЕРЖДЕНИЯ</label>
+                <input type="text" id="verificationCode" 
+                       placeholder="123456" 
+                       maxlength="6" 
+                       class="code-input"
+                       oninput="formatCode(this)">
             </div>
 
-            <button class="btn" onclick="verifyCode()">✅ Подтвердить</button>
-            <button class="btn btn-secondary" onclick="showScreen('registerScreen')">🔄 Отправить код повторно</button>
+            <button class="btn" onclick="verifyCode()">
+                ✅ ПОДТВЕРДИТЬ
+            </button>
+
+            <div class="resend-link">
+                <a onclick="resendCode()">🔄 Отправить код повторно</a>
+            </div>
+
+            <div id="verifyMessage" class="message"></div>
         </div>
 
         <!-- Основной экран казино -->
         <div id="mainScreen" class="screen">
             <div class="header">
                 <div class="logo">🎰</div>
-                <h2>CryptoWin Casino</h2>
+                <div class="title">CryptoWin Casino</div>
+                <div class="subtitle">Добро пожаловать!</div>
             </div>
 
-            <!-- Карточка баланса -->
-            <div class="balance-card">
-                <div>Ваш баланс</div>
-                <div class="balance-amount" id="balanceAmount">0 монет</div>
-                <div>⭐ Звезд: <span id="starsAmount">0</span></div>
-                <button class="btn btn-secondary" onclick="getBalance()">🔄 Обновить баланс</button>
+            <!-- Здесь будет остальной контент основного экрана -->
+            <div class="message info">
+                Регистрация завершена успешно!
             </div>
 
-            <!-- Игры -->
-            <div class="game-grid">
-                <div class="game-btn" onclick="startGame('slots')">
-                    <div class="game-icon">🎰</div>
-                    <div>Слоты</div>
-                    <small>Ставка: 10 монет</small>
-                </div>
-                <div class="game-btn" onclick="startGame('number')">
-                    <div class="game-icon">🔢</div>
-                    <div>Угадай число</div>
-                    <small>Ставка: 5 монет</small>
-                </div>
-                <div class="game-btn" onclick="startGame('dice')">
-                    <div class="game-icon">🎲</div>
-                    <div>Кости</div>
-                    <small>Ставка: 15 монет</small>
-                </div>
-                <div class="game-btn" onclick="startGame('poker')">
-                    <div class="game-icon">🎴</div>
-                    <div>Покер</div>
-                    <small>Ставка: 20 монет</small>
-                </div>
-            </div>
-
-            <!-- Дополнительные функции -->
-            <button class="btn btn-secondary" onclick="showScreen('bonusScreen')">🎁 Ежедневный бонус</button>
-            <button class="btn btn-secondary" onclick="showScreen('convertScreen')">💱 Конвертация</button>
-            <button class="btn btn-secondary" onclick="showScreen('profileScreen')">👤 Профиль</button>
+            <button class="btn" onclick="getBalance()">
+                💰 ПРОВЕРИТЬ БАЛАНС
+            </button>
         </div>
+    </div>
 
-        <!-- Экран игры в слоты -->
-        <div id="slotsScreen" class="screen">
-            <div class="header">
-                <h2>🎰 Игровые автоматы</h2>
-            </div>
-
-            <div class="slots-result" id="slotsResult">
-                <div>?</div>
-                <div>?</div>
-                <div>?</div>
-            </div>
-
-            <button class="btn" onclick="spinSlots()">🎯 Крутить! (10 монет)</button>
-            <div id="slotsMessage" class="result-message"></div>
-            <button class="btn btn-secondary" onclick="showScreen('mainScreen')">← Назад</button>
-        </div>
-
-        <!-- Экран игры в числа -->
-        <div id="numberScreen" class="screen">
-            <div class="header">
-                <h2>🔢 Угадай число</h2>
-                <p>Угадайте число от 1000 до 9999</p>
-            </div>
-
-            <div class="input-group">
-                <label for="numberGuess">Ваше число:</label>
-                <input type="number" id="numberGuess" min="1000" max="9999" placeholder="1234">
-            </div>
-
-            <button class="btn" onclick="guessNumber()">🎯 Угадать! (5 монет)</button>
-            <div id="numberMessage" class="result-message"></div>
-            <button class="btn btn-secondary" onclick="showScreen('mainScreen')">← Назад</button>
-        </div>
-
-        <!-- Экран бонусов -->
-        <div id="bonusScreen" class="screen">
-            <div class="header">
-                <div class="logo">🎁</div>
-                <h2>Ежедневный бонус</h2>
-            </div>
-
-            <button class="btn" onclick="claimDailyBonus()">🎁 Получить ежедневный бонус</button>
-            <div id="bonusMessage" class="result-message"></div>
-            <button class="btn btn-secondary" onclick="showScreen('mainScreen')">← Назад</button>
-        </div>
-
-        <!-- Экран конвертации -->
-        <div id="convertScreen" class="screen">
-            <div class="header">
-                <div class="logo">💱</div>
-                <h2>Конвертация</h2>
-            </div>
-
-            <button class="btn" onclick="convertToStars()">⭐ 500 монет → 1 звезда</button>
-            <button class="btn" onclick="convertFromStars()">💰 1 звезда → 500 монет</button>
-            <div id="convertMessage" class="result-message"></div>
-            <button class="btn btn-secondary" onclick="showScreen('mainScreen')">← Назад</button>
-        </div>
-
-        <!-- Экран профиля -->
-        <div id="profileScreen" class="screen">
-            <div class="header">
-                <div class="logo">👤</div>
-                <h2>Профиль</h2>
-            </div>
-
-            <div class="input-group">
-                <label for="phone">Телефон (для бонуса +100 монет):</label>
-                <input type="tel" id="phone" placeholder="+79991234567">
-            </div>
-
-            <button class="btn" onclick="addPhone()">📞 Добавить телефон</button>
-            <div id="profileMessage" class="result-message"></div>
-            <button class="btn btn-secondary" onclick="showScreen('mainScreen')">← Назад</button>
-        </div>
-
-        <!-- Отладочная информация -->
-        <div class="debug-info" id="debugInfo">
-            Debug console will appear here...
-        </div>
+    <!-- Отладочная панель -->
+    <button class="debug-toggle" onclick="toggleDebug()">DEBUG</button>
+    <div class="debug-panel" id="debugPanel">
+        Debug console initialized...
     </div>
 
     <script>
@@ -383,7 +393,8 @@
         let userData = {
             balance: 0,
             stars: 0,
-            isRegistered: false
+            isRegistered: false,
+            email: ''
         };
 
         // Инициализация Telegram Web App
@@ -393,81 +404,23 @@
                 tg.expand();
                 tg.enableClosingConfirmation();
                 
-                logDebug('Telegram WebApp инициализирован');
-                logDebug('Версия WebApp: ' + tg.version);
-                logDebug('Платформа: ' + tg.platform);
+                logDebug('✅ Telegram WebApp инициализирован');
+                logDebug('📱 Платформа: ' + tg.platform);
+                logDebug('🔢 Версия WebApp: ' + tg.version);
                 
                 // Показываем условия при первом запуске
                 setTimeout(() => {
+                    hideScreen('loadingScreen');
                     showScreen('termsScreen');
-                }, 1000);
+                }, 1500);
                 
             } catch (error) {
-                logDebug('Ошибка инициализации Telegram: ' + error);
+                logDebug('❌ Ошибка инициализации Telegram: ' + error);
                 // Fallback для тестирования вне Telegram
                 setTimeout(() => {
+                    hideScreen('loadingScreen');
                     showScreen('termsScreen');
-                }, 1000);
-            }
-        }
-
-        // Отправка данных в бота
-        function sendToBot(data) {
-            logDebug('Отправка данных в бота: ' + JSON.stringify(data));
-            
-            if (tg && tg.sendData) {
-                // Правильный формат для Telegram WebApp
-                tg.sendData(JSON.stringify(data));
-                logDebug('Данные отправлены через Telegram WebApp');
-            } else {
-                logDebug('Telegram WebApp не доступен, используем fallback');
-                // Fallback для тестирования
-                alert('Данные отправлены: ' + JSON.stringify(data));
-            }
-        }
-
-        // Обработчик сообщений от бота
-        function setupMessageHandler() {
-            if (tg && tg.onEvent) {
-                tg.onEvent('message', (event) => {
-                    try {
-                        logDebug('Получено сообщение от бота: ' + event);
-                        const data = JSON.parse(event);
-                        handleBotResponse(data);
-                    } catch (e) {
-                        logDebug('Ошибка парсинга ответа от бота: ' + e);
-                    }
-                });
-            } else {
-                logDebug('Обработчик сообщений не доступен');
-            }
-        }
-
-        // Обработка ответов от бота
-        function handleBotResponse(data) {
-            logDebug('Обработка ответа от бота: ' + JSON.stringify(data));
-            
-            if (data.success) {
-                switch(data.action) {
-                    case 'terms_accepted':
-                        showScreen('registerScreen');
-                        break;
-                    case 'balance_info':
-                        updateBalance(data.balance, data.stars);
-                        showScreen('mainScreen');
-                        break;
-                    case 'game_result':
-                        handleGameResult(data);
-                        break;
-                    case 'convert':
-                        showMessage(data.message, 'win');
-                        updateBalance(data.new_balance, data.new_stars);
-                        break;
-                    default:
-                        showMessage(data.message, 'win');
-                }
-            } else {
-                showMessage(data.message, 'lose');
+                }, 1500);
             }
         }
 
@@ -477,27 +430,47 @@
                 screen.classList.remove('active');
             });
             document.getElementById(screenId).classList.add('active');
-            logDebug('Переход на экран: ' + screenId);
+            logDebug('🔄 Переход на экран: ' + screenId);
+        }
+
+        function hideScreen(screenId) {
+            document.getElementById(screenId).classList.remove('active');
+        }
+
+        // Форматирование кода подтверждения
+        function formatCode(input) {
+            input.value = input.value.replace(/[^0-9]/g, '').slice(0, 6);
         }
 
         // Принятие условий
         function acceptTerms() {
+            logDebug('✅ Пользователь принял условия');
+            showScreen('registerScreen');
+            
+            // Отправляем подтверждение в бота
             sendToBot({
                 action: 'accept_terms'
             });
-            showScreen('registerScreen');
         }
 
         // Регистрация email
         function registerEmail() {
-            const email = document.getElementById('email').value;
-            const referralCode = document.getElementById('referralCode').value;
+            const email = document.getElementById('email').value.trim();
+            const referralCode = document.getElementById('referralCode').value.trim().toUpperCase();
+            const messageElement = document.getElementById('registerMessage');
             
             if (!email) {
-                showMessage('Введите email', 'lose');
+                showMessage(messageElement, 'Введите email адрес', 'error');
                 return;
             }
 
+            if (!validateEmail(email)) {
+                showMessage(messageElement, 'Введите корректный email адрес', 'error');
+                return;
+            }
+
+            userData.email = email;
+            
             const data = {
                 action: 'register_email',
                 email: email
@@ -505,178 +478,216 @@
 
             if (referralCode) {
                 data.referral_code = referralCode;
+                logDebug('👥 Использован реферальный код: ' + referralCode);
             }
 
+            showMessage(messageElement, 'Отправка запроса...', 'info');
+            logDebug('📧 Регистрация email: ' + email);
+            
             sendToBot(data);
-            showScreen('verifyScreen');
+            
+            // Переходим на экран подтверждения
+            setTimeout(() => {
+                showScreen('verifyScreen');
+                showMessage(document.getElementById('verifyMessage'), 
+                           `Код отправлен на: ${email}`, 'info');
+            }, 1000);
+        }
+
+        // Валидация email
+        function validateEmail(email) {
+            const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            return re.test(email);
         }
 
         // Подтверждение кода
         function verifyCode() {
-            const code = document.getElementById('verificationCode').value;
+            const code = document.getElementById('verificationCode').value.trim();
+            const messageElement = document.getElementById('verifyMessage');
             
             if (!code || code.length !== 6) {
-                showMessage('Введите 6-значный код', 'lose');
+                showMessage(messageElement, 'Введите 6-значный код подтверждения', 'error');
                 return;
             }
 
+            logDebug('🔐 Проверка кода: ' + code);
+            showMessage(messageElement, 'Проверка кода...', 'info');
+            
             sendToBot({
                 action: 'verify_2fa',
                 code: code
             });
         }
 
+        // Повторная отправка кода
+        function resendCode() {
+            const messageElement = document.getElementById('verifyMessage');
+            
+            if (!userData.email) {
+                showMessage(messageElement, 'Сначала введите email', 'error');
+                showScreen('registerScreen');
+                return;
+            }
+
+            logDebug('🔄 Повторная отправка кода на: ' + userData.email);
+            showMessage(messageElement, 'Отправка нового кода...', 'info');
+            
+            sendToBot({
+                action: 'register_email',
+                email: userData.email
+            });
+        }
+
         // Получение баланса
         function getBalance() {
+            logDebug('💰 Запрос баланса');
             sendToBot({
                 action: 'get_balance'
             });
         }
 
-        // Обновление баланса на экране
-        function updateBalance(balance, stars) {
-            userData.balance = balance;
-            userData.stars = stars;
+        // Отправка данных в бота
+        function sendToBot(data) {
+            logDebug('📤 Отправка в бота: ' + JSON.stringify(data));
             
-            document.getElementById('balanceAmount').textContent = balance + ' монет';
-            document.getElementById('starsAmount').textContent = stars;
-            
-            logDebug('Баланс обновлен: ' + balance + ' монет, ' + stars + ' звезд');
+            if (tg && tg.sendData) {
+                try {
+                    tg.sendData(JSON.stringify(data));
+                    logDebug('✅ Данные отправлены через Telegram WebApp');
+                } catch (error) {
+                    logDebug('❌ Ошибка отправки через WebApp: ' + error);
+                }
+            } else {
+                logDebug('⚠️ Telegram WebApp не доступен, используем fallback');
+                // Имитация ответа для тестирования
+                simulateBotResponse(data);
+            }
         }
 
-        // Запуск игры
-        function startGame(gameType) {
-            const bets = {
-                'slots': 10,
-                'number': 5,
-                'dice': 15,
-                'poker': 20
-            };
-
-            if (userData.balance < bets[gameType]) {
-                showMessage('Недостаточно монет для игры!', 'lose');
-                return;
-            }
-
-            switch(gameType) {
-                case 'slots':
-                    showScreen('slotsScreen');
-                    break;
-                case 'number':
-                    showScreen('numberScreen');
-                    break;
-                default:
-                    // Для других игр отправляем запрос напрямую
-                    sendToBot({
-                        action: 'game',
-                        type: gameType,
-                        bet: bets[gameType]
+        // Имитация ответа бота для тестирования
+        function simulateBotResponse(data) {
+            setTimeout(() => {
+                if (data.action === 'register_email') {
+                    handleBotResponse({
+                        success: true,
+                        step: 'code_sent',
+                        message: 'Код отправлен на email (тестовый режим)',
+                        email_sent: true,
+                        telegram_sent: true
                     });
-            }
+                } else if (data.action === 'verify_2fa') {
+                    handleBotResponse({
+                        success: true,
+                        step: 'completed',
+                        message: 'Регистрация завершена! +300 монет 🎁',
+                        balance: 300,
+                        stars: 0
+                    });
+                }
+            }, 2000);
         }
 
-        // Игра в слоты
-        function spinSlots() {
-            sendToBot({
-                action: 'game',
-                type: 'slots',
-                bet: 10
-            });
-        }
-
-        // Игра в числа
-        function guessNumber() {
-            const guess = document.getElementById('numberGuess').value;
+        // Обработка ответов от бота
+        function handleBotResponse(data) {
+            logDebug('📥 Ответ от бота: ' + JSON.stringify(data));
             
-            if (!guess || guess < 1000 || guess > 9999) {
-                showMessage('Введите число от 1000 до 9999', 'lose');
-                return;
-            }
-
-            sendToBot({
-                action: 'game',
-                type: 'number',
-                bet: 5,
-                guess: parseInt(guess)
-            });
-        }
-
-        // Обработка результатов игры
-        function handleGameResult(data) {
-            switch(data.game) {
-                case 'slots':
-                    document.getElementById('slotsResult').innerHTML = 
-                        data.result.map(symbol => `<div>${symbol}</div>`).join('');
-                    document.getElementById('slotsMessage').textContent = data.message;
-                    document.getElementById('slotsMessage').className = 
-                        'result-message ' + (data.win > 0 ? 'win' : 'lose');
-                    break;
-                case 'number':
-                    document.getElementById('numberMessage').textContent = data.message;
-                    document.getElementById('numberMessage').className = 
-                        'result-message ' + (data.win > 0 ? 'win' : 'lose');
-                    break;
-            }
+            const verifyMessage = document.getElementById('verifyMessage');
+            const registerMessage = document.getElementById('registerMessage');
             
-            updateBalance(data.new_balance, userData.stars);
-            showMessage(data.message, data.win > 0 ? 'win' : 'lose');
-        }
-
-        // Ежедневный бонус
-        function claimDailyBonus() {
-            sendToBot({
-                action: 'daily_bonus'
-            });
-        }
-
-        // Конвертация в звезды
-        function convertToStars() {
-            sendToBot({
-                action: 'convert_stars'
-            });
-        }
-
-        // Конвертация из звезд
-        function convertFromStars() {
-            sendToBot({
-                action: 'convert_from_stars'
-            });
-        }
-
-        // Добавление телефона
-        function addPhone() {
-            const phone = document.getElementById('phone').value;
-            
-            if (!phone) {
-                showMessage('Введите номер телефона', 'lose');
-                return;
+            if (data.success) {
+                switch(data.step) {
+                    case 'code_sent':
+                        showMessage(verifyMessage, 
+                                   `✅ Код отправлен на: ${userData.email}`, 
+                                   'success');
+                        break;
+                    case 'completed':
+                        showMessage(verifyMessage, data.message, 'success');
+                        userData.isRegistered = true;
+                        userData.balance = data.balance || 0;
+                        userData.stars = data.stars || 0;
+                        
+                        setTimeout(() => {
+                            showScreen('mainScreen');
+                        }, 2000);
+                        break;
+                    default:
+                        if (data.message) {
+                            showMessage(verifyMessage, data.message, 'success');
+                        }
+                }
+                
+                if (data.action === 'balance_info') {
+                    userData.balance = data.balance || 0;
+                    userData.stars = data.stars || 0;
+                    logDebug(`💰 Баланс: ${userData.balance} монет, ⭐ Звезд: ${userData.stars}`);
+                }
+            } else {
+                showMessage(verifyMessage, data.message || 'Произошла ошибка', 'error');
             }
-
-            sendToBot({
-                action: 'add_phone',
-                phone: phone
-            });
         }
 
         // Показать сообщение
-        function showMessage(message, type) {
-            alert(message); // Временное решение
-            logDebug('Сообщение: ' + message + ' (' + type + ')');
+        function showMessage(element, message, type) {
+            if (!element) return;
+            
+            element.textContent = message;
+            element.className = 'message';
+            
+            switch(type) {
+                case 'success':
+                    element.classList.add('success');
+                    break;
+                case 'error':
+                    element.classList.add('error');
+                    break;
+                case 'info':
+                    element.classList.add('info');
+                    break;
+            }
+            
+            logDebug(`💬 Сообщение [${type}]: ${message}`);
         }
 
         // Логирование для отладки
         function logDebug(message) {
-            const debugElement = document.getElementById('debugInfo');
+            const debugPanel = document.getElementById('debugPanel');
             const timestamp = new Date().toLocaleTimeString();
-            debugElement.innerHTML = `[${timestamp}] ${message}<br>${debugElement.innerHTML}`;
+            const logEntry = `[${timestamp}] ${message}\n`;
+            
+            if (debugPanel) {
+                debugPanel.innerHTML = logEntry + debugPanel.innerHTML;
+            }
+            
             console.log(message);
+        }
+
+        // Переключение отладочной панели
+        function toggleDebug() {
+            const debugPanel = document.getElementById('debugPanel');
+            if (debugPanel.style.display === 'block') {
+                debugPanel.style.display = 'none';
+            } else {
+                debugPanel.style.display = 'block';
+            }
         }
 
         // Инициализация при загрузке
         document.addEventListener('DOMContentLoaded', function() {
+            logDebug('🚀 WebApp загружен');
             initTelegramApp();
-            setupMessageHandler();
-            logDebug('WebApp загружен и готов к работе');
+            
+            // Настройка обработчика сообщений от бота
+            if (window.Telegram && window.Telegram.WebApp) {
+                window.Telegram.WebApp.onEvent('message', (event) => {
+                    try {
+                        const data = JSON.parse(event);
+                        handleBotResponse(data);
+                    } catch (e) {
+                        logDebug('❌ Ошибка парсинга ответа от бота: ' + e);
+                    }
+                });
+            }
         });
     </script>
 </body>
