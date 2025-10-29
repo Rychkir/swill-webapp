@@ -6,7 +6,6 @@
     <title>CryptoWin Casino</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <style>
-        /* Ваши существующие стили */
         body {
             font-family: 'Arial', sans-serif;
             margin: 0;
@@ -54,7 +53,6 @@
 </head>
 <body>
     <div class="container">
-        <!-- Registration Form -->
         <div id="registrationForm" class="card">
             <h2>🎰 Регистрация в CryptoWin</h2>
             <input type="email" id="emailInput" placeholder="Введите ваш email" required>
@@ -62,7 +60,6 @@
             <button onclick="registerUser()">Зарегистрироваться</button>
         </div>
 
-        <!-- 2FA Form -->
         <div id="verificationForm" class="card hidden">
             <h2>🔐 Подтверждение email</h2>
             <p id="emailDisplay"></p>
@@ -70,14 +67,12 @@
             <button onclick="verifyCode()">Подтвердить</button>
         </div>
 
-        <!-- Success Message -->
         <div id="successMessage" class="card hidden">
             <h2>🎉 Регистрация завершена!</h2>
             <p>Добро пожаловать в CryptoWin Casino!</p>
             <p>🎁 Вам начислено 300 бонусных монет!</p>
         </div>
 
-        <!-- Games Section -->
         <div id="gamesSection" class="card hidden">
             <h2>🎮 Игры</h2>
             <button onclick="playGame('slots')">🎰 Слоты</button>
@@ -87,27 +82,20 @@
         </div>
     </div>
 
-    <!-- 🔥 ДОБАВЬТЕ ЭТОТ JavaScript КОД -->
     <script>
-        // Инициализация Telegram Web App
         let tg = window.Telegram.WebApp;
         
-        // Инициализируем Web App
         tg.expand();
         tg.ready();
         
         console.log('✅ Telegram WebApp инициализирован');
 
-        // Функция для отправки данных в бота
         function sendToBot(data) {
             console.log('📤 Отправка данных боту:', data);
             
             try {
-                // Отправляем данные в бота
                 tg.sendData(JSON.stringify(data));
                 console.log('✅ Данные успешно отправлены в бота');
-                
-                // Показываем уведомление пользователю
                 showNotification('Данные отправлены...', 'success');
             } catch (error) {
                 console.error('❌ Ошибка отправки данных:', error);
@@ -115,7 +103,6 @@
             }
         }
 
-        // Функция регистрации
         function registerUser() {
             const email = document.getElementById('emailInput').value.trim();
             const referralCode = document.getElementById('referralInput').value.trim();
@@ -127,20 +114,17 @@
 
             console.log('📧 Регистрация пользователя:', email);
             
-            // Отправляем данные в бота
             sendToBot({
                 action: 'register_email',
                 email: email,
                 referral_code: referralCode
             });
 
-            // Показываем форму для кода
             document.getElementById('registrationForm').classList.add('hidden');
             document.getElementById('verificationForm').classList.remove('hidden');
             document.getElementById('emailDisplay').textContent = `Код отправлен на: ${email}`;
         }
 
-        // Функция подтверждения кода
         function verifyCode() {
             const code = document.getElementById('codeInput').value.trim();
             
@@ -151,28 +135,23 @@
 
             console.log('🔐 Подтверждение кода:', code);
             
-            // Отправляем код в бота
             sendToBot({
                 action: 'verify_2fa',
                 code: code
             });
         }
 
-        // Функция для игр
         function playGame(gameType) {
             console.log('🎮 Запуск игры:', gameType);
             
-            // Отправляем запрос на игру
             sendToBot({
                 action: 'game',
                 type: gameType,
-                bet: 10  // Тестовая ставка
+                bet: 10
             });
         }
 
-        // Функция для уведомлений
         function showNotification(message, type = 'info') {
-            // Создаем уведомление
             const notification = document.createElement('div');
             notification.textContent = message;
             notification.style.cssText = `
@@ -189,23 +168,19 @@
             
             document.body.appendChild(notification);
             
-            // Удаляем уведомление через 3 секунды
             setTimeout(() => {
                 document.body.removeChild(notification);
             }, 3000);
         }
 
-        // Обработчик ответов от бота
         tg.onEvent('webAppDataReceived', (event) => {
             console.log('📨 Получены данные от бота:', event);
         });
 
-        // Также слушаем сообщения от бота (альтернативный метод)
         window.addEventListener('message', function(event) {
             console.log('📨 Получено сообщение:', event.data);
             
             try {
-                // Пробуем распарсить JSON из текста сообщения
                 if (event.data && event.data.text) {
                     const response = JSON.parse(event.data.text);
                     handleBotResponse(response);
@@ -215,21 +190,17 @@
             }
         });
 
-        // Обработчик ответов от бота
         function handleBotResponse(response) {
             console.log('🤖 Ответ от бота:', response);
             
             if (response.success) {
                 showNotification(response.message, 'success');
                 
-                // Обработка разных типов ответов
                 if (response.step === 'completed') {
-                    // Регистрация завершена
                     document.getElementById('verificationForm').classList.add('hidden');
                     document.getElementById('successMessage').classList.remove('hidden');
                     document.getElementById('gamesSection').classList.remove('hidden');
                 } else if (response.action === 'game_result') {
-                    // Результат игры
                     showNotification(`🎮 ${response.message}`, 'success');
                 }
             } else {
@@ -237,7 +208,6 @@
             }
         }
 
-        // Тестовая функция - можно вызвать из консоли браузера
         window.testSend = function() {
             sendToBot({
                 action: 'test',
