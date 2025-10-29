@@ -1,350 +1,253 @@
 <!DOCTYPE html>
-<html>
+<html lang="ru">
 <head>
-    <title>CryptoWin Premium Casino</title>
-    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CryptoWin Casino</title>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
-        
+        /* Ваши существующие стили */
         body {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
+            font-family: 'Arial', sans-serif;
+            margin: 0;
             padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
         }
-        
         .container {
             max-width: 400px;
             margin: 0 auto;
+        }
+        .card {
             background: rgba(255, 255, 255, 0.1);
             backdrop-filter: blur(10px);
-            border-radius: 20px;
-            padding: 30px;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 20px;
             border: 1px solid rgba(255, 255, 255, 0.2);
         }
-        
-        .logo {
-            text-align: center;
-            margin-bottom: 30px;
+        input, button {
+            width: 100%;
+            padding: 12px;
+            margin: 8px 0;
+            border: none;
+            border-radius: 8px;
+            box-sizing: border-box;
         }
-        
-        .logo h1 {
-            font-size: 28px;
-            margin-bottom: 10px;
-            background: linear-gradient(45deg, #FFD700, #FFA500);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-        
-        .form-group {
-            margin-bottom: 20px;
-        }
-        
-        label {
-            display: block;
-            margin-bottom: 8px;
-            font-weight: 500;
-        }
-        
         input {
-            width: 100%;
-            padding: 15px;
-            border: none;
-            border-radius: 10px;
             background: rgba(255, 255, 255, 0.9);
-            font-size: 16px;
-            transition: all 0.3s ease;
-        }
-        
-        input:focus {
-            outline: none;
-            background: white;
-            box-shadow: 0 0 0 3px rgba(255, 215, 0, 0.3);
-        }
-        
-        .btn {
-            width: 100%;
-            padding: 15px;
-            border: none;
-            border-radius: 10px;
-            background: linear-gradient(45deg, #FFD700, #FFA500);
             color: #333;
-            font-size: 18px;
+        }
+        button {
+            background: #ffd700;
+            color: #333;
             font-weight: bold;
             cursor: pointer;
-            transition: all 0.3s ease;
-            margin-bottom: 15px;
         }
-        
-        .btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(255, 215, 0, 0.4);
+        button:hover {
+            background: #ffed4e;
         }
-        
-        .btn-secondary {
-            background: linear-gradient(45deg, #6c757d, #495057);
-        }
-        
-        .terms {
-            background: rgba(255, 255, 255, 0.1);
-            padding: 15px;
-            border-radius: 10px;
-            margin-bottom: 20px;
-            font-size: 11px;
-            line-height: 1.4;
-            opacity: 0.8;
-            max-height: 200px;
-            overflow-y: auto;
-        }
-        
-        .bonus-info {
-            text-align: center;
-            background: linear-gradient(45deg, #FF6B6B, #FFA500);
-            padding: 10px;
-            border-radius: 10px;
-            margin-bottom: 20px;
-            font-weight: bold;
-        }
-        
-        .step {
+        .hidden {
             display: none;
-        }
-        
-        .step.active {
-            display: block;
-        }
-        
-        .code-input {
-            font-size: 24px;
-            text-align: center;
-            letter-spacing: 10px;
-            font-weight: bold;
-        }
-        
-        .agreement-section {
-            margin-bottom: 15px;
-            padding: 10px;
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 8px;
-        }
-        
-        .agreement-title {
-            font-weight: bold;
-            margin-bottom: 5px;
-            color: #FFD700;
-        }
-        
-        .checkbox-group {
-            display: flex;
-            align-items: center;
-            margin-bottom: 15px;
-        }
-        
-        .checkbox-group input {
-            width: auto;
-            margin-right: 10px;
-        }
-        
-        .success-message {
-            background: rgba(76, 175, 80, 0.2);
-            padding: 15px;
-            border-radius: 10px;
-            text-align: center;
-            margin-bottom: 20px;
-            border: 1px solid rgba(76, 175, 80, 0.5);
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <div class="logo">
-            <h1>🎰 CryptoWin Casino</h1>
-            <p>Премиум азартные игры</p>
+        <!-- Registration Form -->
+        <div id="registrationForm" class="card">
+            <h2>🎰 Регистрация в CryptoWin</h2>
+            <input type="email" id="emailInput" placeholder="Введите ваш email" required>
+            <input type="text" id="referralInput" placeholder="Реферальный код (если есть)">
+            <button onclick="registerUser()">Зарегистрироваться</button>
         </div>
-        
-        <!-- Шаг 1: Соглашение -->
-        <div id="step1" class="step active">
-            <div class="bonus-info">
-                🎁 Стартовый бонус: 300 монет!
-            </div>
-            
-            <div class="terms">
-                <div class="agreement-section">
-                    <div class="agreement-title">📋 Условия использования</div>
-                    Регистрируясь, вы подтверждаете согласие с правилами платформы и политикой конфиденциальности.
-                </div>
-                
-                <div class="agreement-section">
-                    <div class="agreement-title">💰 Финансовые условия</div>
-                    Минимальная сумма вывода: 500 монет. Выплаты производятся в течение 24 часов.
-                </div>
-                
-                <div class="agreement-section">
-                    <div class="agreement-title">🎮 Игровой процесс</div>
-                    Все игры используют сертифицированный генератор случайных чисел. Шансы на выигрыш указаны в описании игр.
-                </div>
-                
-                <div class="agreement-section">
-                    <div class="agreement-title">🔐 Безопасность</div>
-                    Ваши данные защищены шифрованием. Мы не передаем информацию третьим лицам.
-                </div>
-                
-                <div class="agreement-section">
-                    <div class="agreement-title">⚖️ Правовые аспекты</div>
-                    Играя, вы подтверждаете, что достигли совершеннолетия и играете ответственно.
-                </div>
-            </div>
-            
-            <div class="checkbox-group">
-                <input type="checkbox" id="agreeTerms">
-                <label for="agreeTerms">Я принимаю условия использования</label>
-            </div>
-            
-            <button class="btn" onclick="acceptTerms()">✅ Принять и продолжить</button>
+
+        <!-- 2FA Form -->
+        <div id="verificationForm" class="card hidden">
+            <h2>🔐 Подтверждение email</h2>
+            <p id="emailDisplay"></p>
+            <input type="text" id="codeInput" placeholder="Введите код из email" maxlength="6">
+            <button onclick="verifyCode()">Подтвердить</button>
         </div>
-        
-        <!-- Шаг 2: Регистрация -->
-        <div id="step2" class="step">
-            <div class="form-group">
-                <label for="email">📧 Ваш Email:</label>
-                <input type="email" id="email" placeholder="example@gmail.com">
-            </div>
-            
-            <div class="form-group">
-                <label for="referral">👥 Реферальный код (необязательно):</label>
-                <input type="text" id="referral" placeholder="Код друга">
-            </div>
-            
-            <button class="btn" onclick="startRegistration()">🚀 Зарегистрироваться</button>
-            <button class="btn btn-secondary" onclick="showStep(1)">↩️ Назад к условиям</button>
+
+        <!-- Success Message -->
+        <div id="successMessage" class="card hidden">
+            <h2>🎉 Регистрация завершена!</h2>
+            <p>Добро пожаловать в CryptoWin Casino!</p>
+            <p>🎁 Вам начислено 300 бонусных монет!</p>
         </div>
-        
-        <!-- Шаг 3: Подтверждение кода -->
-        <div id="step3" class="step">
-            <div style="text-align: center; margin-bottom: 20px;">
-                <p>Код подтверждения отправлен на вашу почту</p>
-                <p id="userEmail" style="font-weight: bold; color: #FFD700;"></p>
-            </div>
-            
-            <div class="form-group">
-                <label>🔐 Введите код из email:</label>
-                <input type="text" id="code" class="code-input" placeholder="123456" maxlength="6">
-            </div>
-            
-            <button class="btn" onclick="verifyCode()">✅ Подтвердить</button>
-            <button class="btn btn-secondary" onclick="showStep(2)">↩️ Назад</button>
-        </div>
-        
-        <!-- Шаг 4: Успешная регистрация -->
-        <div id="step4" class="step">
-            <div class="success-message">
-                <h2>🎉 Регистрация завершена!</h2>
-                <p>🎁 Вам начислено 300 монет</p>
-                <p>⭐ Начните играть прямо сейчас!</p>
-            </div>
-            
-            <button class="btn" onclick="openGames()">🎮 Начать играть</button>
+
+        <!-- Games Section -->
+        <div id="gamesSection" class="card hidden">
+            <h2>🎮 Игры</h2>
+            <button onclick="playGame('slots')">🎰 Слоты</button>
+            <button onclick="playGame('dice')">🎲 Кости</button>
+            <button onclick="playGame('number')">🔢 Угадай число</button>
+            <button onclick="playGame('poker')">🎴 Покер</button>
         </div>
     </div>
 
+    <!-- 🔥 ДОБАВЬТЕ ЭТОТ JavaScript КОД -->
     <script>
+        // Инициализация Telegram Web App
         let tg = window.Telegram.WebApp;
+        
+        // Инициализируем Web App
         tg.expand();
-        tg.MainButton.setText('🎮 Играть').show();
+        tg.ready();
         
-        function showStep(stepNumber) {
-            document.querySelectorAll('.step').forEach(step => {
-                step.classList.remove('active');
-            });
-            document.getElementById('step' + stepNumber).classList.add('active');
+        console.log('✅ Telegram WebApp инициализирован');
+
+        // Функция для отправки данных в бота
+        function sendToBot(data) {
+            console.log('📤 Отправка данных боту:', data);
+            
+            try {
+                // Отправляем данные в бота
+                tg.sendData(JSON.stringify(data));
+                console.log('✅ Данные успешно отправлены в бота');
+                
+                // Показываем уведомление пользователю
+                showNotification('Данные отправлены...', 'success');
+            } catch (error) {
+                console.error('❌ Ошибка отправки данных:', error);
+                showNotification('Ошибка отправки данных', 'error');
+            }
         }
-        
-        function acceptTerms() {
-            if (!document.getElementById('agreeTerms').checked) {
-                alert('❌ Пожалуйста, примите условия использования');
+
+        // Функция регистрации
+        function registerUser() {
+            const email = document.getElementById('emailInput').value.trim();
+            const referralCode = document.getElementById('referralInput').value.trim();
+            
+            if (!email) {
+                showNotification('Введите email', 'error');
                 return;
             }
+
+            console.log('📧 Регистрация пользователя:', email);
             
-            const data = {
-                action: 'accept_terms'
-            };
-            
-            tg.sendData(JSON.stringify(data));
-            showStep(2);
-        }
-        
-        function startRegistration() {
-            const email = document.getElementById('email').value;
-            const referral = document.getElementById('referral').value;
-            
-            if (!email || !email.includes('@')) {
-                alert('❌ Пожалуйста, введите корректный email');
-                return;
-            }
-            
-            const data = {
+            // Отправляем данные в бота
+            sendToBot({
                 action: 'register_email',
                 email: email,
-                referral_code: referral
-            };
-            
-            tg.sendData(JSON.stringify(data));
-            document.getElementById('userEmail').textContent = email;
-            showStep(3);
+                referral_code: referralCode
+            });
+
+            // Показываем форму для кода
+            document.getElementById('registrationForm').classList.add('hidden');
+            document.getElementById('verificationForm').classList.remove('hidden');
+            document.getElementById('emailDisplay').textContent = `Код отправлен на: ${email}`;
         }
-        
+
+        // Функция подтверждения кода
         function verifyCode() {
-            const code = document.getElementById('code').value;
+            const code = document.getElementById('codeInput').value.trim();
             
-            if (code.length !== 6) {
-                alert('❌ Код должен содержать 6 цифр');
+            if (!code || code.length !== 6) {
+                showNotification('Введите 6-значный код', 'error');
                 return;
             }
+
+            console.log('🔐 Подтверждение кода:', code);
             
-            const data = {
+            // Отправляем код в бота
+            sendToBot({
                 action: 'verify_2fa',
                 code: code
-            };
+            });
+        }
+
+        // Функция для игр
+        function playGame(gameType) {
+            console.log('🎮 Запуск игры:', gameType);
             
-            tg.sendData(JSON.stringify(data));
+            // Отправляем запрос на игру
+            sendToBot({
+                action: 'game',
+                type: gameType,
+                bet: 10  // Тестовая ставка
+            });
         }
-        
-        function openGames() {
-            tg.sendData(JSON.stringify({action: 'open_games'}));
+
+        // Функция для уведомлений
+        function showNotification(message, type = 'info') {
+            // Создаем уведомление
+            const notification = document.createElement('div');
+            notification.textContent = message;
+            notification.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                padding: 12px 20px;
+                border-radius: 8px;
+                color: white;
+                font-weight: bold;
+                z-index: 1000;
+                background: ${type === 'error' ? '#e74c3c' : type === 'success' ? '#2ecc71' : '#3498db'};
+            `;
+            
+            document.body.appendChild(notification);
+            
+            // Удаляем уведомление через 3 секунды
+            setTimeout(() => {
+                document.body.removeChild(notification);
+            }, 3000);
         }
-        
-        tg.MainButton.onClick(() => {
-            tg.sendData(JSON.stringify({action: 'open_games'}));
+
+        // Обработчик ответов от бота
+        tg.onEvent('webAppDataReceived', (event) => {
+            console.log('📨 Получены данные от бота:', event);
         });
-        
-        // Обработка ответов от бота
-        tg.onEvent('viewportChanged', function() {
-            const message = tg.initDataUnsafe?.start_param;
-            if (message) {
-                try {
-                    const data = JSON.parse(message);
-                    if (data.step === 'completed') {
-                        showStep(4);
-                    }
-                } catch (e) {
-                    // Не JSON сообщение
+
+        // Также слушаем сообщения от бота (альтернативный метод)
+        window.addEventListener('message', function(event) {
+            console.log('📨 Получено сообщение:', event.data);
+            
+            try {
+                // Пробуем распарсить JSON из текста сообщения
+                if (event.data && event.data.text) {
+                    const response = JSON.parse(event.data.text);
+                    handleBotResponse(response);
                 }
+            } catch (e) {
+                console.log('Сообщение не JSON:', event.data);
             }
         });
-        
-        // Автофокус на код
-        document.getElementById('code')?.addEventListener('input', function(e) {
-            if (this.value.length === 6) {
-                verifyCode();
+
+        // Обработчик ответов от бота
+        function handleBotResponse(response) {
+            console.log('🤖 Ответ от бота:', response);
+            
+            if (response.success) {
+                showNotification(response.message, 'success');
+                
+                // Обработка разных типов ответов
+                if (response.step === 'completed') {
+                    // Регистрация завершена
+                    document.getElementById('verificationForm').classList.add('hidden');
+                    document.getElementById('successMessage').classList.remove('hidden');
+                    document.getElementById('gamesSection').classList.remove('hidden');
+                } else if (response.action === 'game_result') {
+                    // Результат игры
+                    showNotification(`🎮 ${response.message}`, 'success');
+                }
+            } else {
+                showNotification(response.message, 'error');
             }
-        });
+        }
+
+        // Тестовая функция - можно вызвать из консоли браузера
+        window.testSend = function() {
+            sendToBot({
+                action: 'test',
+                message: 'Тестовое сообщение из Web App',
+                timestamp: new Date().toISOString()
+            });
+        }
+
+        console.log('🎯 Web App готов к работе!');
+        console.log('💡 Для теста введите в консоли: testSend()');
     </script>
 </body>
 </html>
