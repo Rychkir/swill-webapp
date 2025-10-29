@@ -340,7 +340,7 @@
             <div class="header">
                 <div class="logo">🔐</div>
                 <div class="title">Подтверждение Email</div>
-                <div class="subtitle">Введите 6-значный код из письма</div>
+                <div class="subtitle">Введите 6-значный код из Telegram</div>
             </div>
 
             <div class="input-group">
@@ -371,7 +371,6 @@
                 <div class="subtitle">Добро пожаловать!</div>
             </div>
 
-            <!-- Здесь будет остальной контент основного экрана -->
             <div class="message info">
                 Регистрация завершена успешно!
             </div>
@@ -412,7 +411,7 @@
                 setTimeout(() => {
                     hideScreen('loadingScreen');
                     showScreen('termsScreen');
-                }, 1500);
+                }, 1000);
                 
             } catch (error) {
                 logDebug('❌ Ошибка инициализации Telegram: ' + error);
@@ -420,7 +419,7 @@
                 setTimeout(() => {
                     hideScreen('loadingScreen');
                     showScreen('termsScreen');
-                }, 1500);
+                }, 1000);
             }
         }
 
@@ -445,12 +444,13 @@
         // Принятие условий
         function acceptTerms() {
             logDebug('✅ Пользователь принял условия');
-            showScreen('registerScreen');
             
             // Отправляем подтверждение в бота
             sendToBot({
                 action: 'accept_terms'
             });
+            
+            showScreen('registerScreen');
         }
 
         // Регистрация email
@@ -485,13 +485,6 @@
             logDebug('📧 Регистрация email: ' + email);
             
             sendToBot(data);
-            
-            // Переходим на экран подтверждения
-            setTimeout(() => {
-                showScreen('verifyScreen');
-                showMessage(document.getElementById('verifyMessage'), 
-                           `Код отправлен на: ${email}`, 'info');
-            }, 1000);
         }
 
         // Валидация email
@@ -552,39 +545,17 @@
             
             if (tg && tg.sendData) {
                 try {
+                    // ОЧЕНЬ ВАЖНО: отправляем как строку JSON
                     tg.sendData(JSON.stringify(data));
                     logDebug('✅ Данные отправлены через Telegram WebApp');
                 } catch (error) {
                     logDebug('❌ Ошибка отправки через WebApp: ' + error);
+                    showMessage(document.getElementById('registerMessage'), 'Ошибка отправки данных', 'error');
                 }
             } else {
-                logDebug('⚠️ Telegram WebApp не доступен, используем fallback');
-                // Имитация ответа для тестирования
-                simulateBotResponse(data);
+                logDebug('⚠️ Telegram WebApp не доступен');
+                showMessage(document.getElementById('registerMessage'), 'WebApp не доступен', 'error');
             }
-        }
-
-        // Имитация ответа бота для тестирования
-        function simulateBotResponse(data) {
-            setTimeout(() => {
-                if (data.action === 'register_email') {
-                    handleBotResponse({
-                        success: true,
-                        step: 'code_sent',
-                        message: 'Код отправлен на email (тестовый режим)',
-                        email_sent: true,
-                        telegram_sent: true
-                    });
-                } else if (data.action === 'verify_2fa') {
-                    handleBotResponse({
-                        success: true,
-                        step: 'completed',
-                        message: 'Регистрация завершена! +300 монет 🎁',
-                        balance: 300,
-                        stars: 0
-                    });
-                }
-            }, 2000);
         }
 
         // Обработка ответов от бота
@@ -597,9 +568,16 @@
             if (data.success) {
                 switch(data.step) {
                     case 'code_sent':
-                        showMessage(verifyMessage, 
-                                   `✅ Код отправлен на: ${userData.email}`, 
+                        showMessage(registerMessage, 
+                                   `✅ Код отправлен в Telegram!`, 
                                    'success');
+                        // Переходим на экран подтверждения
+                        setTimeout(() => {
+                            showScreen('verifyScreen');
+                            showMessage(verifyMessage, 
+                                       'Код отправлен в Telegram. Проверьте сообщения бота.', 
+                                       'info');
+                        }, 1000);
                         break;
                     case 'completed':
                         showMessage(verifyMessage, data.message, 'success');
@@ -621,9 +599,16 @@
                     userData.balance = data.balance || 0;
                     userData.stars = data.stars || 0;
                     logDebug(`💰 Баланс: ${userData.balance} монет, ⭐ Звезд: ${userData.stars}`);
+                    showMessage(document.getElementById('registerMessage'), 
+                               `Баланс: ${userData.balance} монет, Звезд: ${userData.stars}`, 'success');
+                }
+
+                if (data.action === 'terms_accepted') {
+                    logDebug('✅ Условия приняты ботом');
                 }
             } else {
                 showMessage(verifyMessage, data.message || 'Произошла ошибка', 'error');
+                showMessage(registerMessage, data.message || 'Произошла ошибка', 'error');
             }
         }
 
@@ -681,14 +666,20 @@
             if (window.Telegram && window.Telegram.WebApp) {
                 window.Telegram.WebApp.onEvent('message', (event) => {
                     try {
+                        logDebug('📨 Получено сообщение от бота: ' + event);
                         const data = JSON.parse(event);
                         handleBotResponse(data);
                     } catch (e) {
                         logDebug('❌ Ошибка парсинга ответа от бота: ' + e);
                     }
                 });
+            } else {
+                logDebug('⚠️ Обработчик сообщений Telegram не доступен');
             }
         });
+
+        // Fallback для тестирования
+        window.handleBotResponse = handleBotResponse;
     </script>
 </body>
 </html>
